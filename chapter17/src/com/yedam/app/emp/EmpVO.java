@@ -1,6 +1,6 @@
 package com.yedam.app.emp;
 
-public class EmpVO {
+public class EmpVO { //VO->데이터 담는 객체
 
 	// employee의 모든 값을 필드값으로
 	private int empNo;

@@ -10,8 +10,8 @@ public class EmpDAOImpl extends DAO implements EmpDAO {
 	private static EmpDAO instance = null;
 	
 	public static EmpDAO getInstance() {
-		if(instance == null)
-			instance = new EmpDAOImpl();
+		if(instance == null)                /// employee에만 적용하는거니까 싱글톤 만드는거??>>
+			instance = new EmpDAOImpl();   ///구현 객체라서 여기 생성자로 만드는건가? 싱글톤을?? 하나만 필요해서?
 		return instance;
 	}
 	

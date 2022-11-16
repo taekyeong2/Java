@@ -35,7 +35,7 @@ public class EmpManagement {
 				deleteEmp();
 			}else if(menuNo ==9) {
 				//종료
-				end();
+				end();                     ///찐으로 프로그램 종료하는건 안만드나??
 			}else {
 				//기타사항
 				printErrorMessage();
