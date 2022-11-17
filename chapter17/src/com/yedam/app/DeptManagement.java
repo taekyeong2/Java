@@ -46,9 +46,9 @@ public class DeptManagement {
 	}
 	
 	private void menuPrint() {
-		System.out.println("================================================");
+		System.out.println("=====================================================");
 		System.out.println("==1.전체조회 2.사원조회 3.사원등록 4.사원수정 5.사원삭제 9.종료==");
-		System.out.println("================================================");
+		System.out.println("=====================================================");
 	}
 	
 	private int menuSelect() {
@@ -133,15 +133,15 @@ public class DeptManagement {
 	}
 	
 	private void printErrorMessage() {
-		System.out.println("======================");
-		System.out.println("메뉴를 잘못 입력하였습니다.");
-		System.out.println("메뉴를 다시 확인해주세요");
-		System.out.println("======================");
+		System.out.println("=======================");
+		System.out.println("==메뉴를 잘못 입력하였습니다.=");
+		System.out.println("==메뉴를 다시 확인해주세요====");
+		System.out.println("=======================");
 	}
 	
 	private void end() {
 		System.out.println("======================");
-		System.out.println("프로그램을 종료합니다.");
+		System.out.println("===프로그램을 종료합니다.===");
 		System.out.println("======================");
 	}
 	

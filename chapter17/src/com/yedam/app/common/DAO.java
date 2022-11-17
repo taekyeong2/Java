@@ -11,7 +11,7 @@ public class DAO { //data access object
 	//해당되는 DB에 연결하는 클래스
 	//DataBase 연결정보
 	private String jdbcDriver = "org.sqlite.JDBC";
-	private String jbdcUrl = "jdbc:sqlite:/D:/java_태경/jdbc/yedamDataBase.db";
+	private String jbdcUrl = "jdbc:sqlite:/D:/div/database/yedamDataBase.db";
 	
 	//각 메소드에서 공통적으로 상요하는 변수 -> 필드
 	protected Connection conn;
