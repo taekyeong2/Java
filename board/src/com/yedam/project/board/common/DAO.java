@@ -1,4 +1,4 @@
-package com.yedam.project.board;
+package com.yedam.project.board.common;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,7 +10,7 @@ import java.sql.Statement;
 public class DAO {
 	
 	private String jdbcDriver = "org.sqlite.JDBC";
-	private String jdbcUrl = "";
+	private String jdbcUrl = "jdbc:sqlite:/‪D:/dev/boardDataBase.db";
 	
 	protected Connection conn;
 	protected Statement stmt;
