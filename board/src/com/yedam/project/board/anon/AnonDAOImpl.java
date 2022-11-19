@@ -21,7 +21,7 @@ public class AnonDAOImpl extends DAO implements AnonDAO {
 		return anonDAO;
 	}
 
-	// 게시글 불러오기(번호 닉네임 제목)
+	// 게시글 전체출력
 	@Override
 	public List<AnonVO> selectAll() {
 		List<AnonVO> list = new ArrayList<>();
@@ -46,31 +46,57 @@ public class AnonDAOImpl extends DAO implements AnonDAO {
 		}
 		return list;
 	}
+	
 
-	// 게시글 단건조회 (+ 나중에 댓글이랑 메소드 붙이기)
+	//게시글 검색시 조회
 	@Override
-	public AnonVO selectOne(AnonVO anonVO) {
-		AnonVO findVO = null;
+	public List<AnonVO> selectAll(String anonName) {
+		List<AnonVO> list = new ArrayList<>();
 		try {
 			connect();
 
 			stmt = conn.createStatement();
-			String sql = "SELECT * FROM anon WHERE a_num = " + anonVO.getAnonNum();
+			String sql = "SELECT * FROM anon WHERE a_name = " + anonName;
 			rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				AnonVO anonVO = new AnonVO();
+				anonVO.setAnonName(rs.getString("a_name"));
+				anonVO.setAnonTitle(rs.getString("a_title"));
 
-			if (rs.next()) {
-				findVO = new AnonVO();
-				findVO.setAnonNum(rs.getInt("a_num"));
-				findVO.setAnonName(rs.getString("a_name"));
-				findVO.setAnonTitle(rs.getString("a_title"));
-				findVO.setAnonContent(rs.getString("a_content"));
+				list.add(anonVO);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			disconnect();
 		}
-		return findVO;
+		return list;
+	}
+
+	// 게시글 단건조회 (+ 나중에 댓글이랑 메소드 붙이기)
+	@Override
+	public AnonVO selectOne(int anonNum) {
+		AnonVO anonVO = null;
+		try {
+			connect();
+
+			stmt = conn.createStatement();
+			String sql = "SELECT * FROM anon WHERE a_num = " + anonNum;
+			rs = stmt.executeQuery(sql);
+
+			if (rs.next()) {
+			    anonVO = new AnonVO();
+				anonVO.setAnonNum(rs.getInt("a_num"));
+				anonVO.setAnonName(rs.getString("a_name"));
+				anonVO.setAnonTitle(rs.getString("a_title"));
+				anonVO.setAnonContent(rs.getString("a_content"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return anonVO;
 	}
 
 	// 게시글 작성
@@ -78,6 +104,7 @@ public class AnonDAOImpl extends DAO implements AnonDAO {
 	public void insert(AnonVO anonVO) {
 		try {
 			connect();
+			anonVO.getAnonNum();
 			String sql = "INSERT INTO anon (a_name, a_pw, a_title, a_content) VALUES (?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, anonVO.getAnonName());
@@ -101,12 +128,13 @@ public class AnonDAOImpl extends DAO implements AnonDAO {
 
 	// 게시글 수정 - manage에서 조건을 걸자(if 비번 같으면..)
 	@Override
-	public void update(AnonVO anonVO) {
+	public void update(int anonNum, String anonContent) {
 		try {
+			connect();
 			String sql = "UPDATE anon SET a_content = ? WHERE a_num = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, anonVO.getAnonContent());
-			pstmt.setInt(2, anonVO.getAnonNum());
+			pstmt.setString(1, anonContent);
+			pstmt.setInt(2, anonNum);
 			
 			int result = pstmt.executeUpdate();
 			
@@ -116,7 +144,6 @@ public class AnonDAOImpl extends DAO implements AnonDAO {
 				System.out.println("정상적으로 수정되지 않았습니다.");
 			}
 			
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -124,12 +151,13 @@ public class AnonDAOImpl extends DAO implements AnonDAO {
 		}
 	}
 
+	//게시글 삭제
 	@Override
-	public void delete(AnonVO anonVO) {
+	public void delete(int anonNum) {
 		try {
 			connect();
 			stmt = conn.createStatement();
-			String sql = "DELETE FROM anon WHERE a_num = "+ anonVO.getAnonNum();
+			String sql = "DELETE FROM anon WHERE a_num = "+ anonNum;
 			
 			int result = stmt.executeUpdate(sql);
 			if(result > 0) {
@@ -144,5 +172,6 @@ public class AnonDAOImpl extends DAO implements AnonDAO {
 		}
 
 	}
+
 
 }

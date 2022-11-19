@@ -33,6 +33,8 @@ public class FreeCommentVO {
 
 
 	public int getFreeCNum() {
+		int num = 0;
+		this.freeCNum = ++num;
 		return freeCNum;
 	}
 
@@ -58,8 +60,13 @@ public class FreeCommentVO {
 
 	@Override
 	public String toString() {
-		return "자유게시판댓글 [ 작성자: " + memId + ", 댓글번호: " + freeCNum + ", 댓글: "
-				+ freeCContent + "]";
+		String result = null;
+		if(memId == null) {
+			result = "";
+		}else {
+		    result =  freeCNum + ") "+memId + ": " + freeCContent +"\n";
+		}
+		return result;
 	}
 	
 	

@@ -21,6 +21,8 @@ public class FreeVO {
 
 
 	public int getFreeNum() {
+		int num = 0;
+		this.freeNum = ++num;
 		return freeNum;
 	}
 
@@ -58,8 +60,13 @@ public class FreeVO {
 
 	@Override
 	public String toString() {
-		return "자유게시판 [ 작성자: " + memId + ", 게시글번호: " + freeNum + ", 제목: " + freeTitle + ", 내용: "
-				+ freeContent + "]";
+		String result = null;
+		if (freeContent == null) {
+			result = "[" + freeNum + "] " + memId + ") " + freeTitle + "\n";
+		} else {
+			result = "[" + freeNum + "] " + memId + ") " + freeTitle + "\n" + freeContent;
+		}
+		return result;
 	}
 	
 	

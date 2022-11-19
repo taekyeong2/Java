@@ -1,5 +1,6 @@
 package com.yedam.project.board.anon.comment;
 
+
 public class AnonCommentVO {
 	private String anonCName;
 	private String anonCPw;
@@ -60,6 +61,8 @@ public class AnonCommentVO {
 
 
 	public int getAnonCNum() {
+		int num = 0;
+		this.anonCNum = ++num;
 		return anonCNum;
 	}
 
@@ -93,8 +96,13 @@ public class AnonCommentVO {
 
 	@Override
 	public String toString() {
-		return "익명게시판 댓글 [ 닉네임: " + anonCName + ", 댓글번호: "
-				+ anonCNum + ", 댓글: " + anonCContent + "]";
+		String result = null;
+		if(anonCName == null) {
+			result = "";
+		}else {
+		    result =  anonCNum + ") "+anonCName + ": " + anonCContent +"\n";
+		}
+		return result;
 	}
 	
 	

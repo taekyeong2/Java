@@ -25,13 +25,13 @@ public class AnonCommentDAOImpl extends DAO implements AnonCommentDAO {
 
 	// 댓글 전체 출력
 	@Override
-	public List<AnonCommentVO> selectAll(AnonCommentVO anonCVO) {
+	public List<AnonCommentVO> selectAll(int anonNum) {
 		List<AnonCommentVO> list = new ArrayList<>();
 		AnonCommentVO findVO = null;
 		try {
 			connect();
 			stmt = conn.createStatement();
-			String sql = "SELECT * FROM anon_comment WHERE a_num=" + anonCVO.getAnonNum();
+			String sql = "SELECT * FROM anon_comment WHERE a_num=" + anonNum;
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				findVO = new AnonCommentVO();
@@ -48,17 +48,43 @@ public class AnonCommentDAOImpl extends DAO implements AnonCommentDAO {
 		}
 		return list;
 	}
+	
+	//댓글단건조회
+	@Override
+	public AnonCommentVO selectOne(int anonCNum) {
+		AnonCommentVO findVO = null;
+		try {
+			connect();
+
+			stmt = conn.createStatement();
+			String sql = "SELECT ac_pw FROM anon_comment WHERE ac_num = " + anonCNum;
+			rs = stmt.executeQuery(sql);
+
+			if (rs.next()) {
+				findVO = new AnonCommentVO();
+				findVO.setAnonCNum(rs.getInt("ac_pw"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return findVO;
+	}
+
 
 	// 댓글등록
 	@Override
 	public void insert(AnonCommentVO anonCVO) {
 		try {
 			connect();
-			String sql = "INSERT INTO anon_comment (ac_name, ac_pw, ac_content) VALUES (?,?,?)";
+			anonCVO.getAnonCNum();
+			String sql = "INSERT INTO anon_comment (ac_name, ac_pw, ac_content, a_num) VALUES (?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, anonCVO.getAnonCName());
 			pstmt.setString(2, anonCVO.getAnonCPw());
 			pstmt.setString(3, anonCVO.getAnonCContent());
+			pstmt.setInt(4, anonCVO.getAnonNum());
 			
 			int result = pstmt.executeUpdate();
 			
@@ -78,12 +104,13 @@ public class AnonCommentDAOImpl extends DAO implements AnonCommentDAO {
 
 	//댓글 수정
 	@Override
-	public void update(AnonCommentVO anonCVO) {
+	public void update(int anonCNum, String anonCContent) {
 		try {
+			connect();
 			String sql = "UPDATE anon_comment SET ac_content = ? WHERE ac_num = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, anonCVO.getAnonCContent());
-			pstmt.setInt(2, anonCVO.getAnonCNum());
+			pstmt.setString(1, anonCContent);
+			pstmt.setInt(2, anonCNum);
 			
 			int result = pstmt.executeUpdate();
 			
@@ -102,11 +129,11 @@ public class AnonCommentDAOImpl extends DAO implements AnonCommentDAO {
 
 	//댓글삭제
 	@Override
-	public void delete(AnonCommentVO anonCVO) {
+	public void delete(int anonCNum) {
 		try {
 			connect();
 			stmt = conn.createStatement();
-			String sql = "DELETE FROM anon_comment WHERE ac_num = "+ anonCVO.getAnonCNum();
+			String sql = "DELETE FROM anon_comment WHERE ac_num = "+ anonCNum;
 			
 			int result = stmt.executeUpdate(sql);
 			if(result > 0) {
@@ -123,4 +150,26 @@ public class AnonCommentDAOImpl extends DAO implements AnonCommentDAO {
 
 	}
 
+	@Override
+	public void deleteAll(int anonNum) {
+		try {
+			connect();
+			stmt = conn.createStatement();
+			String sql = "DELETE FROM anon_comment WHERE a_num = "+ anonNum;
+			
+			int result = stmt.executeUpdate(sql);
+			if(result > 0) {
+				System.out.println("정상적으로 삭제되었습니다..");
+			}else {
+				System.out.println("정상적으로 삭제되지 않았습니다.");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+	}
+	
+	
 }

@@ -1,5 +1,9 @@
 package com.yedam.project.board;
 
-public class Main {
+import com.yedam.project.board.anon.AnonManage;
 
+public class Main {
+	public static void main(String[] args) {
+		new AnonManage();
+	}
 }
