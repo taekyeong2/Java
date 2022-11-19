@@ -36,7 +36,7 @@ public class AnonManage {
 				while (crun) {
 
 					anonSelect(selectNum);
-
+					//메뉴출력
 					menuPrint();
 					menNo = menuSelect();
 					// 조회메뉴 선택
@@ -181,15 +181,13 @@ public class AnonManage {
 
 	//본인확인(비번으로)
 	private boolean check(int anonNum) {
-		boolean check;
+		boolean check = false;
 		System.out.println("패스워드를 입력해주세요");
 		String checkPw = sc.nextLine();
 		AnonVO anonVO = anonDAO.selectOne(anonNum);
 		if (checkPw.equals(anonVO.getAnonPw())) {
 			check = true;
-		} else {
-			check = false;
-		}
+		} 
 		return check;
 
 	}
@@ -266,16 +264,14 @@ public class AnonManage {
 
 	//댓글 비밀번호 확인
 	private boolean checkC(int anonCNum) {
-		boolean check;
+		boolean checkC = false;
 		System.out.println("비밀번호를 입력해주세요");
 		String checkPw = sc.nextLine();
 		AnonCommentVO anonCVO = anonCDAO.selectOne(anonCNum);
 		if (checkPw.equals(anonCVO.getAnonCPw())) {
-			check = true;
-		} else {
-			check = false;
-		}
-		return check;
+			checkC = true;
+		} 
+		return checkC;
 
 	}
 
@@ -283,7 +279,7 @@ public class AnonManage {
 	private void anonCDelete() {
 		System.out.println("삭제할 댓글번호를 입력해주세요");
 		int anonCNum = anonCoInput();
-		boolean anonCheck = check(anonCNum);
+		boolean anonCheck = checkC(anonCNum);
 		if (anonCheck = true) {
 			anonCDAO.delete(anonCNum);
 		} else {

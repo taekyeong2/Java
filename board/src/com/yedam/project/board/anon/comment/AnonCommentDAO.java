@@ -22,6 +22,6 @@ public interface AnonCommentDAO {
 	void delete (int anonCNum);
 	
 	//댓글 전체 삭제
-	public void deleteAll(int anonNum);
+	void deleteAll(int anonNum);
 	
 }

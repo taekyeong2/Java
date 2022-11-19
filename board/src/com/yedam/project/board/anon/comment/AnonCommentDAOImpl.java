@@ -49,7 +49,7 @@ public class AnonCommentDAOImpl extends DAO implements AnonCommentDAO {
 		return list;
 	}
 	
-	//댓글단건조회
+	//댓글단건조회 - 삭제시필요
 	@Override
 	public AnonCommentVO selectOne(int anonCNum) {
 		AnonCommentVO findVO = null;
@@ -150,6 +150,7 @@ public class AnonCommentDAOImpl extends DAO implements AnonCommentDAO {
 
 	}
 
+	//댓글 전체 삭제
 	@Override
 	public void deleteAll(int anonNum) {
 		try {

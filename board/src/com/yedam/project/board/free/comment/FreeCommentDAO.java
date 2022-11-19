@@ -5,14 +5,17 @@ import java.util.List;
 public interface FreeCommentDAO {
 	
 	//댓글 전체 출력
-	List<FreeCommentVO> selectAll(FreeCommentVO freeCVO);
+	List<FreeCommentVO> selectAll(int freeNum);
 		
 	//댓글 등록
 	void insert (FreeCommentVO freeCVO);
 		
 	//댓글 수정
-	void update (FreeCommentVO freeCVO);
+	void update (int freeCNum, String freeCContent);
 		
 	//게시글 삭제
-	void delete (FreeCommentVO freeCVO);
+	void delete (int freeCNum);
+	
+	//댓글 전체 삭제
+	void deleteAll(int freeNum);
 }

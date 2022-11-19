@@ -3,7 +3,9 @@ package com.yedam.project.board.free.comment;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.yedam.project.board.anon.comment.AnonCommentVO;
 import com.yedam.project.board.common.DAO;
+import com.yedam.project.board.common.LoginControl;
 
 public class FreeCommentDAOImpl extends DAO implements FreeCommentDAO {
 	
@@ -23,13 +25,13 @@ public class FreeCommentDAOImpl extends DAO implements FreeCommentDAO {
 
 	//댓글전체 출력
 	@Override
-	public List<FreeCommentVO> selectAll(FreeCommentVO freeCVO) {
+	public List<FreeCommentVO> selectAll(int freeNum) {
 		List<FreeCommentVO> list = new ArrayList<>();
 		FreeCommentVO findVO = null;
 		try {
 			connect();
 			stmt = conn.createStatement();
-			String sql = "SELECT * FROM free_comment WHERE f_num=" + freeCVO.getFreeNum();
+			String sql = "SELECT * FROM free_comment WHERE f_num=" + freeNum;
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				findVO = new FreeCommentVO();
@@ -46,15 +48,18 @@ public class FreeCommentDAOImpl extends DAO implements FreeCommentDAO {
 		}
 		return list;
 	}
-
+	
 	//댓글등록
 	@Override
 	public void insert(FreeCommentVO freeCVO) {
 		try {
 			connect();
-			String sql = "INSERT INTO free_comment (fc_content) VALUES (?)";
+			freeCVO.getFreeCNum();
+			String sql = "INSERT INTO free_comment (m_id, fc_content, fc_num) VALUES (?,?,?)";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, freeCVO.getFreeCContent());
+			pstmt.setString(1, LoginControl.getLoginInfo().getMemId());
+			pstmt.setString(2, freeCVO.getFreeCContent());
+			pstmt.setInt(3, freeCVO.getFreeNum());
 			
 			int result = pstmt.executeUpdate();
 			
@@ -74,12 +79,13 @@ public class FreeCommentDAOImpl extends DAO implements FreeCommentDAO {
 
 	//댓글수정
 	@Override
-	public void update(FreeCommentVO freeCVO) {
+	public void update(int freeCNum, String freeCContent) {
 		try {
+			connect();
 			String sql = "UPDATE free_comment SET fc_content = ? WHERE fc_num = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, freeCVO.getFreeCContent());
-			pstmt.setInt(2, freeCVO.getFreeCNum());
+			pstmt.setString(1, freeCContent);
+			pstmt.setInt(2, freeCNum);
 			
 			int result = pstmt.executeUpdate();
 			
@@ -98,11 +104,34 @@ public class FreeCommentDAOImpl extends DAO implements FreeCommentDAO {
 
 	//댓글삭제
 	@Override
-	public void delete(FreeCommentVO freeCVO) {
+	public void delete(int freeCNum) {
 		try {
 			connect();
 			stmt = conn.createStatement();
-			String sql = "DELETE FROM free_comment WHERE fc_num = "+ freeCVO.getFreeCNum();
+			String sql = "DELETE FROM free_comment WHERE fc_num = "+ freeCNum;
+			int result = stmt.executeUpdate(sql);
+			if(result > 0) {
+				System.out.println("정상적으로 삭제되었습니다..");
+			}else {
+				System.out.println("정상적으로 삭제되지 않았습니다.");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+	}
+
+
+	//댓글 전체 삭제
+	@Override
+	public void deleteAll(int freeNum) {
+		try {
+			connect();
+			stmt = conn.createStatement();
+			String sql = "DELETE FROM free_comment WHERE f_num = "+ freeNum;
+			
 			int result = stmt.executeUpdate(sql);
 			if(result > 0) {
 				System.out.println("정상적으로 삭제되었습니다..");
