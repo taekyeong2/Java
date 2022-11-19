@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.yedam.project.board.common.DAO;
+import com.yedam.project.board.common.LoginControl;
 import com.yedam.project.board.free.comment.FreeCommentDAO;
 import com.yedam.project.board.free.comment.FreeCommentDAOImpl;
 import com.yedam.project.board.free.comment.FreeCommentVO;
@@ -25,13 +26,13 @@ public class NoticeCommentDAOImpl extends DAO implements NoticeCommentDAO {
 
 	//댓글 전체 출력
 	@Override
-	public List<NoticeCommentVO> selectAll(NoticeCommentVO noticeCVO) {
+	public List<NoticeCommentVO> selectAll(int noticeNum) {
 		List<NoticeCommentVO> list = new ArrayList<>();
 		NoticeCommentVO findVO = null;
 		try {
 			connect();
 			stmt = conn.createStatement();
-			String sql = "SELECT * FROM notice_comment WHERE n_num=" + noticeCVO.getNoticeNum();
+			String sql = "SELECT * FROM notice_comment WHERE n_num=" + noticeNum;
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				findVO = new NoticeCommentVO();
@@ -54,10 +55,13 @@ public class NoticeCommentDAOImpl extends DAO implements NoticeCommentDAO {
 	public void insert(NoticeCommentVO noticeCVO) {
 		try {
 			connect();
-			String sql = "INSERT INTO notice_comment (nc_content) VALUES (?)";
+			noticeCVO.getNoticeCNum();
+			String sql = "INSERT INTO notice_comment (m_id, nc_content, nc_num) VALUES (?,?,?)";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, noticeCVO.getNoticeCContent());
-			
+			pstmt.setString(1, LoginControl.getLoginInfo().getMemId());
+			pstmt.setString(2, noticeCVO.getNoticeCContent());
+			pstmt.setInt(3, noticeCVO.getNoticeCNum());
+		
 			int result = pstmt.executeUpdate();
 			
 			if(result > 0) {
@@ -77,12 +81,13 @@ public class NoticeCommentDAOImpl extends DAO implements NoticeCommentDAO {
 	
 	//댓글수정
 	@Override
-	public void update(NoticeCommentVO noticeCVO) {
+	public void update(int noticeCNum, String noticeCContent) {
 		try {
+			connect();
 			String sql = "UPDATE notice_comment SET nc_content = ? WHERE nc_num = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, noticeCVO.getNoticeCContent());
-			pstmt.setInt(2, noticeCVO.getNoticeCNum());
+			pstmt.setString(1, noticeCContent);
+			pstmt.setInt(2, noticeCNum);
 			
 			int result = pstmt.executeUpdate();
 			
@@ -101,11 +106,11 @@ public class NoticeCommentDAOImpl extends DAO implements NoticeCommentDAO {
 
 	//댓글삭제
 	@Override
-	public void delete(NoticeCommentVO noticeCVO) {
+	public void delete(int noticeCNum) {
 		try {
 			connect();
 			stmt = conn.createStatement();
-			String sql = "DELETE FROM notice_comment WHERE nc_num = "+ noticeCVO.getNoticeCNum();
+			String sql = "DELETE FROM notice_comment WHERE nc_num = "+ noticeCNum;
 			int result = stmt.executeUpdate(sql);
 			if(result > 0) {
 				System.out.println("정상적으로 삭제되었습니다..");
@@ -119,6 +124,28 @@ public class NoticeCommentDAOImpl extends DAO implements NoticeCommentDAO {
 			disconnect();
 		}
 		
+	}
+
+	//댓글전체 삭제
+	@Override
+	public void deleteAll(int noticeNum) {
+		try {
+			connect();
+			stmt = conn.createStatement();
+			String sql = "DELETE FROM free_comment WHERE f_num = "+ noticeNum;
+			
+			int result = stmt.executeUpdate(sql);
+			if(result > 0) {
+				System.out.println("정상적으로 삭제되었습니다..");
+			}else {
+				System.out.println("정상적으로 삭제되지 않았습니다.");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
 	}
 
 }

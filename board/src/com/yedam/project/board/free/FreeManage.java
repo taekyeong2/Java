@@ -24,7 +24,6 @@ public class FreeManage {
 			momMenuPrint();
 			// 메뉴선택
 			int menNo = menuSelect();
-			// 맘메뉴선택
 			switch (menNo) {
 			case 1:
 				// 작성
@@ -274,7 +273,7 @@ public class FreeManage {
 		if (freeCheck = true) {
 			freeCDAO.delete(freeCNum);
 		} else {
-			System.out.println("패스워드가 일치하지 않습니다.");
+			System.out.println("본인이 아닙니다.");
 			return;
 		}
 	}

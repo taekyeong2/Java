@@ -129,6 +129,7 @@ public class FreeDAOImpl extends DAO implements FreeDAO {
 	@Override
 	public void update(int freeNum, String freeContent) {
 		try {
+			connect();
 			String sql = "UPDATE free SET f_content = ? WHERE f_num = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, freeContent);

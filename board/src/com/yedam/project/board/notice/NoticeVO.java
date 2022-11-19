@@ -24,6 +24,8 @@ public class NoticeVO {
 
 
 	public int getNoticeNum() {
+		int num = 0;
+		this.noticeNum = ++num;
 		return noticeNum;
 	}
 
@@ -67,8 +69,13 @@ public class NoticeVO {
 
 	@Override
 	public String toString() {
-		return "공지게시판 [ 게시글번호: " + noticeNum + ", 제목: " + noticeTitle
-				+ ", 내용: " + noticeContent + "]";
+		String result = null;
+		if (noticeContent == null) {
+			result = "[" + noticeNum + "] " + memId + ") " + noticeTitle + "\n";
+		} else {
+			result = "[" + noticeNum + "] " + memId + ") " + noticeTitle + "\n" + noticeContent;
+		}
+		return result;
 	}
 	
 	

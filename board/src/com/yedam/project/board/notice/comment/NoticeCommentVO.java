@@ -38,6 +38,8 @@ public class NoticeCommentVO {
 
 
 	public int getNoticeCNum() {
+		int num = 0;
+		this.noticeNum = ++num;
 		return noticeCNum;
 	}
 
@@ -67,8 +69,13 @@ public class NoticeCommentVO {
 
 	@Override
 	public String toString() {
-		return "게시글댓글 [ 작성자: " + memId + ", 댓글번호: " + noticeCNum
-				+ ", 댓글: " + noticeCContent + "]";
+		String result = null;
+		if(memId == null) {
+			result = "";
+		}else {
+		    result =  noticeCNum + ") "+memId + ": " + noticeCContent +"\n";
+		}
+		return result;
 	}
 	
 	
