@@ -55,7 +55,7 @@ public class FreeCommentDAOImpl extends DAO implements FreeCommentDAO {
 		try {
 			connect();
 			freeCVO.getFreeCNum();
-			String sql = "INSERT INTO free_comment (m_id, fc_content, fc_num) VALUES (?,?,?)";
+			String sql = "INSERT INTO free_comment (m_id, fc_content, f_num) VALUES (?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, LoginControl.getLoginInfo().getMemId());
 			pstmt.setString(2, freeCVO.getFreeCContent());

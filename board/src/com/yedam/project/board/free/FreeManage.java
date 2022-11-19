@@ -8,6 +8,7 @@ import com.yedam.project.board.common.LoginControl;
 import com.yedam.project.board.free.comment.FreeCommentDAO;
 import com.yedam.project.board.free.comment.FreeCommentDAOImpl;
 import com.yedam.project.board.free.comment.FreeCommentVO;
+import com.yedam.project.board.notice.NoticeVO;
 
 public class FreeManage {
 	Scanner sc = new Scanner(System.in);
@@ -31,10 +32,11 @@ public class FreeManage {
 				break;
 			case 2:
 				// 조회
-				boolean crun = true;
+				boolean crun;
 				System.out.println("조회할 게시글 번호를 입력해 주세요.");
 				System.out.println("게시글 번호 > ");
 				int selectNum = Integer.parseInt(sc.nextLine());
+				crun = selectCheck(selectNum);
 				while (crun) {
 
 					freeSelect(selectNum);
@@ -129,6 +131,18 @@ public class FreeManage {
 
 		return freeVO;
 	}
+	
+	// 게시글 단건 유무
+	private boolean selectCheck(int freeNum) {
+		boolean check = true;
+		FreeVO freeVO = freeDAO.selectOne(freeNum);
+		if (freeVO == null) {
+			System.out.println("없는 게시글 입니다.");
+			check = false;
+		}
+		return check;
+	}
+
 
 	// 게시글 단건조회
 	private void freeSelect(int freeNum) {
@@ -280,13 +294,14 @@ public class FreeManage {
 	
 	//글검색 - 아이디로 
 	private void freeSearch() {
+		String find = inputId();
 		List<FreeVO> list = freeDAO.selectAll();
 		String str = "";
 		if (list == null) {
 			System.out.println("게시글이 없습니다.");
 		} else {
 			for(FreeVO freeVO : list) {
-				if(freeVO.getMemId().equals(memId)) {
+				if(freeVO.getMemId().equals(find)) {
 					str += freeVO;;
 				}
 			}
@@ -294,6 +309,13 @@ public class FreeManage {
 		System.out.println(memId+"님의 게시물 >");
 		System.out.println(str);
 		System.out.println("--------------------------");
+	}
+	
+	//검색할 id
+	private String inputId() {
+		System.out.println("검색할 아이디를 입력해주세요 > ");
+		String find = sc.nextLine();
+		return find;
 	}
 	
 	//메뉴잘못선택시 출력

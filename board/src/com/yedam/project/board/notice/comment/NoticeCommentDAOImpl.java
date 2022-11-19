@@ -56,11 +56,11 @@ public class NoticeCommentDAOImpl extends DAO implements NoticeCommentDAO {
 		try {
 			connect();
 			noticeCVO.getNoticeCNum();
-			String sql = "INSERT INTO notice_comment (m_id, nc_content, nc_num) VALUES (?,?,?)";
+			String sql = "INSERT INTO notice_comment (m_id, nc_content, n_num) VALUES (?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, LoginControl.getLoginInfo().getMemId());
 			pstmt.setString(2, noticeCVO.getNoticeCContent());
-			pstmt.setInt(3, noticeCVO.getNoticeCNum());
+			pstmt.setInt(3, noticeCVO.getNoticeNum());
 		
 			int result = pstmt.executeUpdate();
 			
@@ -132,7 +132,7 @@ public class NoticeCommentDAOImpl extends DAO implements NoticeCommentDAO {
 		try {
 			connect();
 			stmt = conn.createStatement();
-			String sql = "DELETE FROM free_comment WHERE f_num = "+ noticeNum;
+			String sql = "DELETE FROM notice_comment WHERE n_num = "+ noticeNum;
 			
 			int result = stmt.executeUpdate(sql);
 			if(result > 0) {

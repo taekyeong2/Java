@@ -6,6 +6,7 @@ import java.util.Scanner;
 import com.yedam.project.board.anon.comment.AnonCommentDAO;
 import com.yedam.project.board.anon.comment.AnonCommentDAOImpl;
 import com.yedam.project.board.anon.comment.AnonCommentVO;
+import com.yedam.project.board.notice.NoticeVO;
 
 public class AnonManage {
 	Scanner sc = new Scanner(System.in);
@@ -29,10 +30,11 @@ public class AnonManage {
 				break;
 			case 2:
 				// 조회
-				boolean crun = true;
+				boolean crun;
 				System.out.println("조회할 게시글 번호를 입력해 주세요.");
 				System.out.println("게시글 번호 > ");
 				int selectNum = Integer.parseInt(sc.nextLine());
+				crun = selectCheck(selectNum);
 				while (crun) {
 
 					anonSelect(selectNum);
@@ -132,6 +134,18 @@ public class AnonManage {
 
 		return anonVO;
 	}
+	
+	// 게시글 단건 유무
+	private boolean selectCheck(int anonNum) {
+		boolean check = true;
+		AnonVO anonVO = anonDAO.selectOne(anonNum);
+		if (anonVO == null) {
+			System.out.println("없는 게시글 입니다.");
+			check = false;
+		}
+		return check;
+	}
+
 
 	//게시글 단건조회
 	private void anonSelect(int anonNum) {

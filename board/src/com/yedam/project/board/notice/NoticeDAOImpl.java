@@ -34,7 +34,7 @@ public class NoticeDAOImpl extends DAO implements NoticeDAO {
 			while (rs.next()) {
 				NoticeVO noticeVO = new NoticeVO();
 				noticeVO.setNoticeNum(rs.getInt("n_num"));
-				noticeVO.setMemId(rs.getString("m_id"));
+				noticeVO.setMemId("관리자");
 				noticeVO.setNoticeTitle(rs.getString("n_title"));
 
 				list.add(noticeVO);
@@ -55,13 +55,13 @@ public class NoticeDAOImpl extends DAO implements NoticeDAO {
 			connect();
 
 			stmt = conn.createStatement();
-			String sql = "SELECT * FROM noitce WHERE n_num = " + noticeNum;
+			String sql = "SELECT * FROM notice WHERE n_num = " + noticeNum;
 			rs = stmt.executeQuery(sql);
 
 			if (rs.next()) {
 				findVO = new NoticeVO();
 				findVO.setNoticeNum(rs.getInt("n_num"));
-				findVO.setMemId(rs.getString("m_id"));
+				findVO.setMemId("관리자");
 				findVO.setNoticeTitle(rs.getString("n_title"));
 				findVO.setNoticeContent(rs.getString("n_content"));
 			}
