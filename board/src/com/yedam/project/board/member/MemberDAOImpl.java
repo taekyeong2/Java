@@ -26,24 +26,25 @@ public class MemberDAOImpl extends DAO implements MemberDAO {
 			connect();
 
 			stmt = conn.createStatement();
-			String sql = "SELECT * FROM member WHERE m_id =" + memberVO.getMemId();
+			String sql = "SELECT * FROM member WHERE m_id = '" + memberVO.getMemId() + "'";
 			rs = stmt.executeQuery(sql);
 
 			// 아이디 체크
 			if (rs.next()) {
-				// 비밀번호 일치하는가?
-				if (rs.getString("m_pw").equals(memberVO.getMemPw())) {
-					// 로그인한 정보 저장
-					loginInfo = new MemberVO();
-					loginInfo.setMemId(rs.getString("m_id"));
-					loginInfo.setMemPw(rs.getString("m_pw"));
-					loginInfo.setMemRole(rs.getInt("m_role"));
+					// 비밀번호 일치하는가?
+					if (rs.getString("m_pw").equals(memberVO.getMemPw())) {
+						// 로그인한 정보 저장
+						loginInfo = new MemberVO(); 
+						loginInfo.setMemId(rs.getString("m_id"));
+						loginInfo.setMemPw(rs.getString("m_pw"));
+						loginInfo.setMemRole(rs.getInt("m_role"));
+					} else {
+						System.out.println("비밀번호가 일치하지 않습니다.");
+					}
 				} else {
-					System.out.println("비밀번호가 일치하지 않습니다.");
+					System.out.println("아이디가 존재하지 않습니다.");
 				}
-			} else {
-				System.out.println("아이디가 존재하지 않습니다.");
-			}
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();

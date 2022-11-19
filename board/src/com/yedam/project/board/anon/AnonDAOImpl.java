@@ -48,30 +48,30 @@ public class AnonDAOImpl extends DAO implements AnonDAO {
 	}
 	
 
-	//게시글 검색시 조회
-	@Override
-	public List<AnonVO> selectAll(String anonName) {
-		List<AnonVO> list = new ArrayList<>();
-		try {
-			connect();
-
-			stmt = conn.createStatement();
-			String sql = "SELECT * FROM anon WHERE a_name = " + anonName;
-			rs = stmt.executeQuery(sql);
-			while (rs.next()) {
-				AnonVO anonVO = new AnonVO();
-				anonVO.setAnonName(rs.getString("a_name"));
-				anonVO.setAnonTitle(rs.getString("a_title"));
-
-				list.add(anonVO);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			disconnect();
-		}
-		return list;
-	}
+//	//게시글 검색시 조회
+//	@Override
+//	public List<AnonVO> selectAll(String anonName) {
+//		List<AnonVO> list = new ArrayList<>();
+//		try {
+//			connect();
+//
+//			stmt = conn.createStatement();
+//			String sql = "SELECT * FROM anon WHERE a_name = '" + anonName+"'";
+//			rs = stmt.executeQuery(sql);
+//			while (rs.next()) {
+//				AnonVO anonVO = new AnonVO();
+//				anonVO.setAnonName(rs.getString("a_name"));
+//				anonVO.setAnonTitle(rs.getString("a_title"));
+//
+//				list.add(anonVO);
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		} finally {
+//			disconnect();
+//		}
+//		return list;
+//	}
 
 	// 게시글 단건조회 (+ 나중에 댓글이랑 메소드 붙이기)
 	@Override

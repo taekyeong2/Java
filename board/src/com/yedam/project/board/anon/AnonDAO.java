@@ -6,9 +6,9 @@ public interface AnonDAO {
 	
 	//게시글 불러오기
 	List<AnonVO> selectAll();
-	
-	//게시글 검색
-	List<AnonVO> selectAll(String anonName);
+//	
+//	//게시글 검색
+//	List<AnonVO> selectAll(String anonName);
 	
 	//게시글 단건조회
 	AnonVO selectOne(int anonNum);
