@@ -160,7 +160,7 @@ public class FreeDAOImpl extends DAO implements FreeDAO {
 
 			int result = stmt.executeUpdate(sql);
 			if (result > 0) {
-				System.out.println("정상적으로 삭제되었습니다..");
+				System.out.println("정상적으로 삭제되었습니다.");
 			} else {
 				System.out.println("정상적으로 삭제되지 않았습니다.");
 			}

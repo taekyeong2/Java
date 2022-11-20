@@ -161,9 +161,7 @@ public class NoticeCommentDAOImpl extends DAO implements NoticeCommentDAO {
 			String sql = "DELETE FROM notice_comment WHERE n_num = "+ noticeNum;
 			
 			int result = stmt.executeUpdate(sql);
-			if(result > 0) {
-				System.out.println("정상적으로 삭제되었습니다..");
-			}else {
+			if(result == 0) {
 				System.out.println("정상적으로 삭제되지 않았습니다.");
 			}
 			

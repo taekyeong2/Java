@@ -18,6 +18,7 @@ public class FreeManage {
 		boolean run = true;
 		while (run) {
 			// 자유게시판접속
+			boardType();
 			freeSelectAll();
 			// 메뉴출력
 			momMenuPrint();
@@ -85,6 +86,13 @@ public class FreeManage {
 		}
 
 	}
+	
+
+	//게시판이름 출력
+	private void boardType() {
+		System.out.println("< 자유게시판 >");
+		System.out.println();
+	}
 
 	// 전체 게시글 불러오기
 	private void freeSelectAll() {
@@ -98,9 +106,9 @@ public class FreeManage {
 
 	// 엄마메뉴 출력
 	private void momMenuPrint() {
-		System.out.println("===========================");
-		System.out.println("1.작성 |2.조회 |3.검색 |0.뒤로가기");
-		System.out.println("===========================");
+		System.out.println("================================");
+		System.out.println(" 1.작성 | 2.조회 | 3.검색 | 0.뒤로가기 ");
+		System.out.println("================================");
 	}
 
 	// 메뉴선택
@@ -135,6 +143,7 @@ public class FreeManage {
 		FreeVO freeVO = freeDAO.selectOne(freeNum);
 		if (freeVO == null) {
 			System.out.println("없는 게시글 입니다.");
+			System.out.println();
 			check = false;
 		}
 		return check;
@@ -149,6 +158,7 @@ public class FreeManage {
 		String freeCStr = "";
 		if (freeVO == null) {
 			System.out.println("없는 게시글 입니다.");
+			System.out.println();
 		} else {
 			freeStr += freeVO;
 			for (FreeCommentVO comment : list) {
@@ -162,9 +172,10 @@ public class FreeManage {
 
 	// 메뉴출력
 	private void menuPrint() {
-		System.out.println("==============================================");
-		System.out.println("1.수정 |2.삭제 |3.댓글작성 |4.댓글수정 |5.댓글삭제 |0.뒤로가기");
-		System.out.println("==============================================");
+		System.out.println("=================================");
+		System.out.println("1.수정 | 2.삭제 ");
+		System.out.println("3.댓글작성 |4.댓글수정 |5.댓글삭제 |0.뒤로가기");
+		System.out.println("=================================");
 	}
 
 	// 게시글 수정
@@ -181,6 +192,7 @@ public class FreeManage {
 			}
 		} else {
 			System.out.println("작성하신 글이 아닙니다.");
+			System.out.println();
 			return;
 		}
 	}
@@ -217,6 +229,7 @@ public class FreeManage {
 			}
 		} else {
 			System.out.println("작성하신 글이 아닙니다.");
+			System.out.println();
 			return;
 		}
 
@@ -258,6 +271,7 @@ public class FreeManage {
 			freeCDAO.update(freeCNum, content);
 		} else {
 			System.out.println("본인이 아닙니다.");
+			System.out.println();
 			return;
 		}
 	}
@@ -287,6 +301,7 @@ public class FreeManage {
 			freeCDAO.delete(freeCNum);
 		} else {
 			System.out.println("본인이 아닙니다.");
+			System.out.println();
 			return;
 		}
 	}
@@ -319,7 +334,8 @@ public class FreeManage {
 	
 	//메뉴잘못선택시 출력
 	private void error() {
-			System.out.println("올바른 메뉴를 입려해 주세요");			
+			System.out.println("올바른 메뉴를 입려해 주세요");	
+			System.out.println();
 	}
 
 	

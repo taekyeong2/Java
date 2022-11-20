@@ -48,9 +48,9 @@ public class LoginControl {
 	
 	    // 메뉴출력
 		private void menuPrint() {
-			System.out.println("============================");
-			System.out.println("1.공지게시판 |2.자유게시판 |0.로그아웃");
-			System.out.println("============================");
+			System.out.println("================================");
+			System.out.println(" 1.공지게시판 | 2.자유게시판 | 0.로그아웃 ");
+			System.out.println("================================");
 		}
 	
 		// 메뉴선택

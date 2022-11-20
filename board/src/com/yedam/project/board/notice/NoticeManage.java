@@ -21,6 +21,7 @@ public class NoticeManage {
 		boolean run = true;
 		while (run) {
 			// 공지게시판 접속
+			boardType();
 			notiSelectAll();
 			// 메뉴출력
 			momMenuPrint();
@@ -85,6 +86,13 @@ public class NoticeManage {
 
 		}
 	}
+	
+
+	//게시판이름 출력
+	private void boardType() {
+		System.out.println("< 공지게시판 >");
+		System.out.println();
+	}
 
 	// 전체 게시글 불러오기
 	private void notiSelectAll() {
@@ -98,9 +106,9 @@ public class NoticeManage {
 
 	// 엄마메뉴 출력
 	private void momMenuPrint() {
-		System.out.println("===========================");
-		System.out.println("1.작성 |2.조회 |0.뒤로가기");
-		System.out.println("===========================");
+		System.out.println("================================");
+		System.out.println(" 1.작성 | 2.조회 | 0.뒤로가기 ");
+		System.out.println("================================");
 	}
 
 	// 메뉴선택
@@ -118,6 +126,7 @@ public class NoticeManage {
 			notiDAO.insert(notiVO);
 		} else {
 			System.out.println("권한이 없습니다.");
+			System.out.println();
 			return;
 		}
 
@@ -151,6 +160,7 @@ public class NoticeManage {
 		NoticeVO notiVO = notiDAO.selectOne(notiNum);
 		if (notiVO == null) {
 			System.out.println("없는 게시글 입니다.");
+			System.out.println();
 			check = false;
 		}
 		return check;
@@ -173,9 +183,10 @@ public class NoticeManage {
 
 	// 메뉴출력
 	private void menuPrint() {
-		System.out.println("==============================================");
-		System.out.println("1.수정 |2.삭제 |3.댓글작성 |4.댓글수정 |5.댓글삭제 |0.뒤로가기");
-		System.out.println("==============================================");
+		System.out.println("=================================");
+		System.out.println("1.수정 | 2.삭제 ");
+		System.out.println("3.댓글작성 |4.댓글수정 |5.댓글삭제 |0.뒤로가기");
+		System.out.println("=================================");
 	}
 
 	// 게시글 수정
@@ -192,6 +203,7 @@ public class NoticeManage {
 			}
 		} else {
 			System.out.println("권한이 없습니다.");
+			System.out.println();
 			return;
 		}
 
@@ -219,6 +231,7 @@ public class NoticeManage {
 			}
 		} else {
 			System.out.println("권한이 없습니다.");
+			System.out.println();
 			return;
 		}
 	}
@@ -259,6 +272,7 @@ public class NoticeManage {
 			notiCDAO.update(notiCNum, content);
 		} else {
 			System.out.println("본인이 아닙니다.");
+			System.out.println();
 			return;
 		}
 	}
@@ -289,6 +303,8 @@ public class NoticeManage {
 			notiCDAO.delete(notiCNum);
 		} else {
 			System.out.println("본인이 아닙니다.");
+			System.out.println();
+			System.out.println();
 			return;
 		}
 	}
@@ -296,6 +312,7 @@ public class NoticeManage {
 	// 메뉴잘못선택시 출력
 	private void error() {
 		System.out.println("올바른 메뉴를 입려해 주세요");
+		System.out.println();
 	}
 
 }

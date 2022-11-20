@@ -159,9 +159,7 @@ public class AnonCommentDAOImpl extends DAO implements AnonCommentDAO {
 			String sql = "DELETE FROM anon_comment WHERE a_num = "+ anonNum;
 			
 			int result = stmt.executeUpdate(sql);
-			if(result > 0) {
-				System.out.println("정상적으로 삭제되었습니다..");
-			}else {
+			if(result == 0) {
 				System.out.println("정상적으로 삭제되지 않았습니다.");
 			}
 			

@@ -17,6 +17,7 @@ public class AnonManage {
 		boolean run = true;
 		while (run) {
 			// 익명게시판 접속
+			boardType();
 			anonSelectAll();
 			// 메뉴출력
 			momMenuPrint();
@@ -36,7 +37,6 @@ public class AnonManage {
 				int selectNum = Integer.parseInt(sc.nextLine());
 				crun = selectCheck(selectNum);
 				while (crun) {
-
 					anonSelect(selectNum);
 					// 메뉴출력
 					menuPrint();
@@ -88,6 +88,12 @@ public class AnonManage {
 
 		}
 	}
+	
+	//게시판이름 출력
+	private void boardType() {
+		System.out.println("< 익명게시판 >");
+		System.out.println();
+	}
 
 	// 전체 게시글 불러오기
 	private void anonSelectAll() {
@@ -101,9 +107,9 @@ public class AnonManage {
 
 	// 엄마메뉴 출력
 	private void momMenuPrint() {
-		System.out.println("===========================");
-		System.out.println("1.작성 |2.조회 |3.검색 |0.뒤로가기");
-		System.out.println("===========================");
+		System.out.println("================================");
+		System.out.println(" 1.작성 | 2.조회 | 3.검색 | 0.뒤로가기 ");
+		System.out.println("================================");
 	}
 
 	// 메뉴선택
@@ -141,6 +147,7 @@ public class AnonManage {
 		AnonVO anonVO = anonDAO.selectOne(anonNum);
 		if (anonVO == null) {
 			System.out.println("없는 게시글 입니다.");
+			System.out.println();
 			check = false;
 		}
 		return check;
@@ -154,6 +161,7 @@ public class AnonManage {
 		String anonCStr = "";
 		if (anonVO == null) {
 			System.out.println("없는 게시글 입니다.");
+			System.out.println();
 		} else {
 			anonStr += anonVO;
 			for (AnonCommentVO comment : list) {
@@ -167,9 +175,10 @@ public class AnonManage {
 
 	// 메뉴출력
 	private void menuPrint() {
-		System.out.println("==============================================");
-		System.out.println("1.수정 |2.삭제 |3.댓글작성 |4.댓글수정 |5.댓글삭제 |0.뒤로가기");
-		System.out.println("==============================================");
+		System.out.println("=================================");
+		System.out.println("1.수정 | 2.삭제 ");
+		System.out.println("3.댓글작성 |4.댓글수정 |5.댓글삭제 |0.뒤로가기");
+		System.out.println("=================================");
 	}
 
 	// 게시글수정
@@ -186,6 +195,7 @@ public class AnonManage {
 			}
 		} else {
 			System.out.println("패스워드가 일치하지 않습니다.");
+			System.out.println();
 			return;
 		}
 	}
@@ -225,6 +235,7 @@ public class AnonManage {
 			}
 		} else {
 			System.out.println("패스워드가 일치하지 않습니다.");
+			System.out.println();
 			return;
 		}
 	}
@@ -268,6 +279,7 @@ public class AnonManage {
 			anonCDAO.update(anonCNum, content);
 		} else {
 			System.out.println("패스워드가 일치하지 않습니다.");
+			System.out.println();
 			return;
 		}
 	}
@@ -300,6 +312,7 @@ public class AnonManage {
 			anonCDAO.delete(anonCNum);
 		} else {
 			System.out.println("패스워드가 일치하지 않습니다.");
+			System.out.println();
 			return;
 		}
 	}
@@ -334,5 +347,6 @@ public class AnonManage {
 	// 메뉴잘못선택시 출력
 	private void error() {
 		System.out.println("올바른 메뉴를 입려해 주세요");
+		System.out.println();
 	}
 }
