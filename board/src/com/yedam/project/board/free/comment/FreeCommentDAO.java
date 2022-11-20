@@ -7,6 +7,8 @@ public interface FreeCommentDAO {
 	//댓글 전체 출력
 	List<FreeCommentVO> selectAll(int freeNum);
 		
+	//댓글 단건 출력
+	public FreeCommentVO selectOne(int freeCNum);
 	//댓글 등록
 	void insert (FreeCommentVO freeCVO);
 		

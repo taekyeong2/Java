@@ -62,7 +62,7 @@ public class AnonCommentDAOImpl extends DAO implements AnonCommentDAO {
 
 			if (rs.next()) {
 				findVO = new AnonCommentVO();
-				findVO.setAnonCNum(rs.getInt("ac_pw"));
+				findVO.setAnonCPw(rs.getString("ac_pw"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

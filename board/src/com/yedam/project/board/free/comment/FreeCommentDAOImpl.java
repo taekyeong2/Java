@@ -3,6 +3,7 @@ package com.yedam.project.board.free.comment;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.yedam.project.board.anon.AnonVO;
 import com.yedam.project.board.anon.comment.AnonCommentVO;
 import com.yedam.project.board.common.DAO;
 import com.yedam.project.board.common.LoginControl;
@@ -47,6 +48,31 @@ public class FreeCommentDAOImpl extends DAO implements FreeCommentDAO {
 			disconnect();
 		}
 		return list;
+	}
+	
+	//댓글 단건 출력 - 삭제 수정시 
+	@Override
+	public FreeCommentVO selectOne(int freeCNum) {
+		FreeCommentVO freeCVO = null;
+		try {
+			connect();
+
+			stmt = conn.createStatement();
+			String sql = "SELECT * FROM free_comment WHERE fc_num = '" + freeCNum +"'";
+			rs = stmt.executeQuery(sql);
+
+			if (rs.next()) {
+			    freeCVO = new FreeCommentVO();
+				freeCVO.setFreeCNum(rs.getInt("fc_num"));
+				freeCVO.setMemId(rs.getString("m_id"));
+				freeCVO.setFreeCContent(rs.getString("fc_content"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return freeCVO;
 	}
 	
 	//댓글등록

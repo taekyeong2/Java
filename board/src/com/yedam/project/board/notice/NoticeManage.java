@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.yedam.project.board.common.LoginControl;
+import com.yedam.project.board.free.FreeVO;
 import com.yedam.project.board.free.comment.FreeCommentVO;
 import com.yedam.project.board.notice.comment.NoticeCommentDAO;
 import com.yedam.project.board.notice.comment.NoticeCommentDAOImpl;
@@ -51,7 +52,7 @@ public class NoticeManage {
 					case 2:
 						// 삭제
 						notiDelete(selectNum);
-						crun = false;
+						crun = boardCheck(selectNum);
 						break;
 					case 3:
 						// 댓글작성
@@ -162,17 +163,12 @@ public class NoticeManage {
 		String notiStr = "";
 		String notiCStr = "";
 		notiStr += notiVO;
-		if (notiVO == null) {
-			System.out.println("없는 게시글 입니다.");
-		} else {
-			notiStr += notiVO;
-			for (NoticeCommentVO comment : list) {
-				notiCStr += comment;
-			}
-			System.out.println(notiStr);
-			System.out.println("\n" + "댓글 > ");
-			System.out.println(notiCStr);
+		for (NoticeCommentVO comment : list) {
+			notiCStr += comment;
 		}
+		System.out.println(notiStr);
+		System.out.println("\n" + "댓글 > ");
+		System.out.println(notiCStr);
 	}
 
 	// 메뉴출력
@@ -185,21 +181,20 @@ public class NoticeManage {
 	// 게시글 수정
 	private void notiUpdate(int notiNum) {
 		String confirm;
-		System.out.println("게시글 내용을 수정하시겠습니까? (y/n)");
-		confirm = sc.nextLine();
-		boolean checkRole = checkRole();
-		if(checkRole == true) {
+		if (checkRole() == true) {
+			System.out.println("게시글 내용을 수정하시겠습니까? (y/n)");
+			confirm = sc.nextLine();
 			if (confirm.toLowerCase().equals("y")) {
 				String content = updateContent();
 				notiDAO.update(notiNum, content);
-			}else {
+			} else {
 				return;
 			}
-		}else {
+		} else {
 			System.out.println("권한이 없습니다.");
 			return;
 		}
-		
+
 	}
 
 	// 수정할 내용
@@ -213,21 +208,29 @@ public class NoticeManage {
 	// 게시글삭제 + 그게시글의 전체 댓글삭제
 	private void notiDelete(int notiNum) {
 		String confirm;
-		System.out.println("게시글 내용을 삭제하시겠습니까? (y/n)");
-		confirm = sc.nextLine();
-
-		if (confirm.toLowerCase().equals("y")) {
-			boolean checkRole = checkRole();
-			if (checkRole = true) {
+		if (checkRole() == true) {
+			System.out.println("게시글 내용을 삭제하시겠습니까? (y/n)");
+			confirm = sc.nextLine();
+			if (confirm.toLowerCase().equals("y")) {
 				notiDAO.delete(notiNum);
 				notiCDAO.deleteAll(notiNum);
 			} else {
-				System.out.println("작성하신 글이 아닙니다.");
 				return;
 			}
 		} else {
+			System.out.println("권한이 없습니다.");
 			return;
 		}
+	}
+
+	// 게시글 유무 확인
+	private boolean boardCheck(int notiNum) {
+		boolean check = true;
+		NoticeVO notiVO = notiDAO.selectOne(notiNum);
+		if (notiVO == null) {
+			check = false;
+		}
+		return check;
 	}
 
 	// 댓글작성
@@ -251,8 +254,7 @@ public class NoticeManage {
 	private void notiCUpdate() {
 		System.out.println("수정할 댓글번호를 입력해주세요");
 		int notiCNum = notiCoInput();
-		boolean notiCheck = checkC(notiCNum);
-		if (notiCheck = true) {
+		if (checkC(notiCNum) == true) {
 			String content = updateContent();
 			notiCDAO.update(notiCNum, content);
 		} else {
@@ -261,16 +263,14 @@ public class NoticeManage {
 		}
 	}
 
-	// 댓글삭제 시 아이디 비교
+	// 댓글삭제,수정 시 아이디 비교
 	private boolean checkC(int notiCNum) {
 		boolean checkC = false;
-		List<NoticeCommentVO> notiCVO = new ArrayList<>();
-		notiCVO = notiCDAO.selectAll(notiCNum);
-		for (NoticeCommentVO find : notiCVO) {
-			if (find.getMemId().equals(memId)) {
-				checkC = true;
-			}
+		NoticeCommentVO notiCVO = notiCDAO.selectOne(notiCNum);
+		if (notiCVO.getMemId().equals(memId)) {
+			checkC = true;
 		}
+
 		return checkC;
 	}
 
@@ -285,8 +285,7 @@ public class NoticeManage {
 	private void notiCDelete() {
 		System.out.println("삭제할 댓글번호를 입력해주세요");
 		int notiCNum = notiCoInput();
-		boolean notiCheck = checkC(notiCNum);
-		if (notiCheck = true) {
+		if (checkC(notiCNum) == true) {
 			notiCDAO.delete(notiCNum);
 		} else {
 			System.out.println("본인이 아닙니다.");

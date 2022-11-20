@@ -81,7 +81,7 @@ public class AnonDAOImpl extends DAO implements AnonDAO {
 			connect();
 
 			stmt = conn.createStatement();
-			String sql = "SELECT * FROM anon WHERE a_num = " + anonNum;
+			String sql = "SELECT * FROM anon WHERE a_num = '" + anonNum +"'";
 			rs = stmt.executeQuery(sql);
 
 			if (rs.next()) {
@@ -98,6 +98,30 @@ public class AnonDAOImpl extends DAO implements AnonDAO {
 		}
 		return anonVO;
 	}
+	
+	//게시글 + 비밀번호 확인(비밀번호)
+	@Override
+	public AnonVO selectCheck(int anonNum) {
+		AnonVO anonVO = null;
+		try {
+			connect();
+
+			stmt = conn.createStatement();
+			String sql = "SELECT a_pw FROM anon WHERE a_num = " + anonNum ;
+			rs = stmt.executeQuery(sql);
+
+			if (rs.next()) {
+			    anonVO = new AnonVO();
+				anonVO.setAnonPw(rs.getString("a_pw"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return anonVO;
+	}
+
 
 	// 게시글 작성
 	@Override
@@ -172,6 +196,7 @@ public class AnonDAOImpl extends DAO implements AnonDAO {
 		}
 
 	}
+
 
 
 }

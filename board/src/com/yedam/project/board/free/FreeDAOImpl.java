@@ -81,7 +81,7 @@ public class FreeDAOImpl extends DAO implements FreeDAO {
 			connect();
 
 			stmt = conn.createStatement();
-			String sql = "SELECT * FROM free WHERE f_num = " + freeNum;
+			String sql = "SELECT * FROM free WHERE f_num = '" + freeNum+"'";
 			rs = stmt.executeQuery(sql);
 
 			if (rs.next()) {

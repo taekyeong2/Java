@@ -49,6 +49,32 @@ public class NoticeCommentDAOImpl extends DAO implements NoticeCommentDAO {
 		}
 		return list;
 	}
+	
+	//댓글 단건 출력 - 삭제 수정시 
+		@Override
+		public NoticeCommentVO selectOne(int noticeCNum) {
+			NoticeCommentVO notiCVO = null;
+			try {
+				connect();
+
+				stmt = conn.createStatement();
+				String sql = "SELECT * FROM notice_comment WHERE nc_num = '" + noticeCNum +"'";
+				rs = stmt.executeQuery(sql);
+
+				if (rs.next()) {
+				    notiCVO = new NoticeCommentVO();
+				    notiCVO.setNoticeCNum(rs.getInt("nc_num"));
+				    notiCVO.setMemId(rs.getString("m_id"));
+				    notiCVO.setNoticeCContent(rs.getString("nc_content"));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				disconnect();
+			}
+			return notiCVO;
+		}
+		
 
 	//댓글등록
 	@Override

@@ -3,7 +3,7 @@ package com.yedam.project.board.notice.comment;
 public class NoticeCommentVO {
 	private String memId;
 	private int noticeNum;
-	private int noticeCNum;
+	private int noticeCNum; 
 	private String noticeCContent;
 	
 	
@@ -39,7 +39,7 @@ public class NoticeCommentVO {
 
 	public int getNoticeCNum() {
 		int num = 0;
-		this.noticeNum = ++num;
+		this.noticeCNum = ++num;  
 		return noticeCNum;
 	}
 

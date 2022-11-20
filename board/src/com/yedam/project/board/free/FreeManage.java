@@ -1,6 +1,5 @@
 package com.yedam.project.board.free;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -8,7 +7,6 @@ import com.yedam.project.board.common.LoginControl;
 import com.yedam.project.board.free.comment.FreeCommentDAO;
 import com.yedam.project.board.free.comment.FreeCommentDAOImpl;
 import com.yedam.project.board.free.comment.FreeCommentVO;
-import com.yedam.project.board.notice.NoticeVO;
 
 public class FreeManage {
 	Scanner sc = new Scanner(System.in);
@@ -38,7 +36,6 @@ public class FreeManage {
 				int selectNum = Integer.parseInt(sc.nextLine());
 				crun = selectCheck(selectNum);
 				while (crun) {
-
 					freeSelect(selectNum);
 					// 메뉴출력
 					menuPrint();
@@ -52,7 +49,7 @@ public class FreeManage {
 					case 2:
 						// 삭제
 						freeDelete(selectNum);
-						crun = false;
+						crun = boardCheck(selectNum);
 						break;
 					case 3:
 						// 댓글작성
@@ -173,19 +170,17 @@ public class FreeManage {
 	// 게시글 수정
 	private void freeUpdate(int freeNum) {
 		String confirm;
-		System.out.println("게시글 내용을 수정하시겠습니까? (y/n)");
-		confirm = sc.nextLine();
-
-		if (confirm.toLowerCase().equals("y")) {
-			boolean anonCheck = check(freeNum);
-			if (anonCheck = true) {
+		if (check(freeNum) == true) {
+			System.out.println("게시글 내용을 수정하시겠습니까? (y/n)");
+			confirm = sc.nextLine();
+			if (confirm.toLowerCase().equals("y")) {
 				String content = updateContent();
 				freeDAO.update(freeNum, content);
 			} else {
-				System.out.println("작성하신 글이 아닙니다.");
 				return;
 			}
 		} else {
+			System.out.println("작성하신 글이 아닙니다.");
 			return;
 		}
 	}
@@ -211,21 +206,30 @@ public class FreeManage {
 	// 게시글삭제 + 그게시글의 전체 댓글삭제
 	private void freeDelete(int freeNum) {
 		String confirm;
-		System.out.println("게시글 내용을 삭제하시겠습니까? (y/n)");
-		confirm = sc.nextLine();
-
-		if (confirm.toLowerCase().equals("y")) {
-			boolean anonCheck = check(freeNum);
-			if (anonCheck = true) {
+		if (check(freeNum) == true) {
+			System.out.println("게시글 내용을 삭제하시겠습니까? (y/n)");
+			confirm = sc.nextLine();
+			if (confirm.toLowerCase().equals("y")) {
 				freeDAO.delete(freeNum);
 				freeCDAO.deleteAll(freeNum);
 			} else {
-				System.out.println("작성하신 글이 아닙니다.");
 				return;
 			}
 		} else {
+			System.out.println("작성하신 글이 아닙니다.");
 			return;
 		}
+
+	}
+	
+	//게시글 유무 확인
+	private boolean boardCheck(int anonNum) {
+		boolean check = true;
+		FreeVO freeVO = freeDAO.selectOne(anonNum);
+		if(freeVO == null) {
+			check = false;
+		}
+		return check;
 	}
 
 	// 댓글작성
@@ -249,8 +253,7 @@ public class FreeManage {
 	private void freeCUpdate() {
 		System.out.println("수정할 댓글번호를 입력해주세요");
 		int freeCNum = freeCoInput();
-		boolean freeCheck = checkC(freeCNum);
-		if (freeCheck = true) {
+		if (checkC(freeCNum) == true) {
 			String content = updateContent();
 			freeCDAO.update(freeCNum, content);
 		} else {
@@ -259,16 +262,13 @@ public class FreeManage {
 		}
 	}
 
-	// 댓글삭제 시 아이디 비교
+	// 댓글삭제,수정 시 아이디 비교
 	private boolean checkC(int freeCNum) {
 		boolean checkC = false;
-		List<FreeCommentVO> freeCVO = new ArrayList<>();
-		freeCVO = freeCDAO.selectAll(freeCNum);
-		for (FreeCommentVO find : freeCVO) {
-			if (find.getMemId().equals(memId)) {
+		FreeCommentVO freeCVO = freeCDAO.selectOne(freeCNum);
+			if (freeCVO.getMemId().equals(memId)) {
 				checkC = true;
 			}
-		}
 		return checkC;
 	}
 
@@ -283,8 +283,7 @@ public class FreeManage {
 	private void freeCDelete() {
 		System.out.println("삭제할 댓글번호를 입력해주세요");
 		int freeCNum = freeCoInput();
-		boolean freeCheck = checkC(freeCNum);
-		if (freeCheck = true) {
+		if (checkC(freeCNum)== true) {
 			freeCDAO.delete(freeCNum);
 		} else {
 			System.out.println("본인이 아닙니다.");
