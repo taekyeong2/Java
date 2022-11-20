@@ -88,7 +88,8 @@ public class LoginControl {
 	
 	//메뉴잘못선택시 출력
 	private void error() {
-			System.out.println("올바른 메뉴를 입려해 주세요");			
+			System.out.println("올바른 메뉴를 입려해 주세요");
+			System.out.println();
 	}
 
 	

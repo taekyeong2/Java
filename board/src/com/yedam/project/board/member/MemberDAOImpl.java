@@ -40,9 +40,11 @@ public class MemberDAOImpl extends DAO implements MemberDAO {
 						loginInfo.setMemRole(rs.getInt("m_role"));
 					} else {
 						System.out.println("비밀번호가 일치하지 않습니다.");
+						System.out.println();
 					}
 				} else {
 					System.out.println("아이디가 존재하지 않습니다.");
+					System.out.println();
 				}
 			
 
@@ -71,8 +73,10 @@ public class MemberDAOImpl extends DAO implements MemberDAO {
 
 			if (result > 0) {
 				System.out.println("정상적으로 등록되었습니다.");
+				System.out.println();
 			} else {
 				System.out.println("정상적으로 등록되지 않았습니다.");
+				System.out.println();
 			}
 
 		} catch (Exception e) {

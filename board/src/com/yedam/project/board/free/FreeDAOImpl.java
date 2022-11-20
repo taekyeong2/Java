@@ -115,8 +115,10 @@ public class FreeDAOImpl extends DAO implements FreeDAO {
 
 			if (result > 0) {
 				System.out.println("정상적으로 등록되었습니다.");
+				System.out.println();
 			} else {
 				System.out.println("정상적으로 등록되지 않았습니다.");
+				System.out.println();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -139,8 +141,10 @@ public class FreeDAOImpl extends DAO implements FreeDAO {
 
 			if (result > 0) {
 				System.out.println("정상적으로 수정되었습니다.");
+				System.out.println();
 			} else {
 				System.out.println("정상적으로 수정되지 않았습니다.");
+				System.out.println();
 			}
 
 		} catch (Exception e) {
@@ -161,8 +165,10 @@ public class FreeDAOImpl extends DAO implements FreeDAO {
 			int result = stmt.executeUpdate(sql);
 			if (result > 0) {
 				System.out.println("정상적으로 삭제되었습니다.");
+				System.out.println();
 			} else {
 				System.out.println("정상적으로 삭제되지 않았습니다.");
+				System.out.println();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
