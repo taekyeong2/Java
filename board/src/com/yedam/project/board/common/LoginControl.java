@@ -68,7 +68,15 @@ public class LoginControl {
 		
 		//로그인성공
 		if(loginInfo == null) {
+			System.out.println("아이디가 존재하지 않습니다.\n");
 			login = false;
+		}else {
+			if(loginInfo.getMemPw().equals(inputInfo.getMemPw())) {
+				System.out.println(loginInfo.getMemId()+"님 반갑습니다.\n");
+			}else {
+				System.out.println("비밀번호가 일치하지 않습니다.\n");
+				login = false;
+			}
 		}
 		return login;
 		
@@ -80,7 +88,7 @@ public class LoginControl {
 		MemberVO memberInfo = new MemberVO();
 		System.out.println("아이디 > "); 
 		memberInfo.setMemId(sc.nextLine());
-		System.out.println("패스워드 > "); 
+		System.out.println("비밀번호 > "); 
 		memberInfo.setMemPw(sc.nextLine());
 		
 		return memberInfo;
@@ -88,7 +96,7 @@ public class LoginControl {
 	
 	//메뉴잘못선택시 출력
 	private void error() {
-			System.out.println("올바른 메뉴를 입려해 주세요.\n");
+			System.out.println("올바른 메뉴를 입력해 주세요.\n");
 	}
 
 	

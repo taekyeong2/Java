@@ -257,36 +257,29 @@ public class FreeManage {
 
 	// 댓글작성내용
 	private FreeCommentVO writeCInfo(int freeNum) {
-		List<FreeCommentVO> checklist = freeCDAO.selectAll(freeNum);
+		List<FreeCommentVO> checkList = freeCDAO.selectAll(freeNum);
 		FreeCommentVO freeCVO = new FreeCommentVO();
 		freeCVO.setMemId(memId);
 		System.out.println("댓글 > ");
 		freeCVO.setFreeCContent(sc.nextLine());
 		freeCVO.setFreeNum(freeNum);
-		if (checklist.isEmpty()) {
-			freeCVO.setFreeCNum(1);
-		} else {
-			int num = checklist.size();
-			++num;
-			freeCVO.setFreeCNum(num);
-		}
+		int num = checkList.size();
+		++num;
+		freeCVO.setFreeCNum(num);
 
 		return freeCVO;
 	}
 
-	
-	//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&여기서 수정합시다
 	// 댓글수정
 	private void freeCUpdate(int freeNum) {
 		System.out.println("수정할 댓글번호를 입력해주세요");
 		int freeCNum = freeCoInput();
+		int checkCNum = commentCheck(freeNum, freeCNum);
 		List<FreeCommentVO> freeCVO = freeCDAO.selectAll(freeNum);
-		if (freeCVO.isEmpty()) {
-			System.out.println("없는댓글입니다.\n");
-		} else {
-			for (FreeCommentVO freeCheck : freeCVO) {
+		for (FreeCommentVO freeCheck : freeCVO) {
+			if (checkCNum > 0) {
 				if (freeCheck.getFreeCNum() == freeCNum) {
-					if (checkC(freeCNum, freeNum) == true) {
+					if (freeCheck.getMemId().equals(memId)) {
 						String content = updateContent();
 						freeCDAO.update(freeCNum, content);
 					} else {
@@ -294,22 +287,25 @@ public class FreeManage {
 						return;
 					}
 				}
+			} else {
+				System.out.println("댓글이 존재하지 않습니다.\n");
+				return;
 			}
 		}
 	}
 
-	// 댓글삭제,수정 시 아이디 비교
-	private boolean checkC(int freeCNum, int freeNum) {
-		boolean checkC = false;
+	// 댓글 유무확인
+	private int commentCheck(int freeNum, int freeCNum) {
+		int freeCheckNum = freeCNum;
+		int checkCNum = 0;
 		List<FreeCommentVO> freeCVO = freeCDAO.selectAll(freeNum);
-		for(FreeCommentVO checkNum : freeCVO) {
-			if(checkNum.getFreeCNum() == freeCNum) {
-				if (checkNum.getMemId().equals(memId)) {
-					checkC = true;
-				}
+		for (FreeCommentVO freeCheck : freeCVO) {
+			if (freeCheck.getFreeCNum() == freeCheckNum) {
+				checkCNum += freeCheck.getFreeCNum();
 			}
 		}
-		return checkC;
+		return checkCNum;
+
 	}
 
 	// 수정할 댓글 번호
@@ -323,19 +319,22 @@ public class FreeManage {
 	private void freeCDelete(int freeNum) {
 		System.out.println("삭제할 댓글번호를 입력해주세요");
 		int freeCNum = freeCoInput();
+		int checkCNum = commentCheck(freeNum, freeCNum);
 		List<FreeCommentVO> freeCVO = freeCDAO.selectAll(freeNum);
-		if (freeCVO == null) {
-			System.out.println("없는댓글입니다.\n");
-		} else {
-			for(FreeCommentVO freeCheck : freeCVO) {
-				if(freeCheck.getFreeCNum() == freeCNum) {
-					if (checkC(freeCNum, freeNum) == true) {
+		for (FreeCommentVO freeCheck : freeCVO) {
+			if (checkCNum > 0) {
+				if (freeCheck.getFreeCNum() == freeCNum) {
+					if (freeCheck.getMemId().equals(memId)) {
 						freeCDAO.delete(freeCNum);
 					} else {
 						System.out.println("본인이 아닙니다.\n");
 						return;
 					}
+
 				}
+			} else {
+				System.out.println("댓글이 존재하지 않습니다.\n");
+				return;
 			}
 		}
 	}
@@ -368,7 +367,7 @@ public class FreeManage {
 
 	// 메뉴잘못선택시 출력
 	private void error() {
-		System.out.println("올바른 메뉴를 입려해 주세요\n");
+		System.out.println("올바른 메뉴를 입력해 주세요\n");
 	}
 
 }

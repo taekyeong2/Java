@@ -59,28 +59,41 @@ public class Management {
 		int menNo = Integer.parseInt(sc.nextLine());
 		return menNo;
 	}
-	
-	//회원가입
+
+	// 회원가입
 	private void memberJoin() {
 		MemberVO memVO = inputMemInfo();
-		memDAO.insert(memVO);
+		if(joinCheck(memVO) == true) {
+			memDAO.insert(memVO);					
+		}else {
+			System.out.println("중복된 아이디입니다.\n");
+		}
 	}
-	
-	//회원정보입력
+
+	// 회원정보입력
 	private MemberVO inputMemInfo() {
 		MemberVO memberInfo = new MemberVO();
 		System.out.println("아이디 > ");
 		memberInfo.setMemId(sc.nextLine());
-		System.out.println("패스워드 > ");
+		System.out.println("비밀번호 > ");
 		memberInfo.setMemPw(sc.nextLine());
-		
+	
 		return memberInfo;
 	}
 	
-	//메뉴잘못선택시 출력
-	private void error() {
-			System.out.println("올바른 메뉴를 입력해 주세요\n");	
+	//회원가입시 중복아이디 체크
+	private boolean joinCheck(MemberVO memberVO) {
+		boolean check = false;
+		MemberVO checkMem = memDAO.selectOne(memberVO);
+		if(checkMem == null) {
+			check = true;
+		}
+		return check;
 	}
 
+	// 메뉴잘못선택시 출력
+	private void error() {
+		System.out.println("올바른 메뉴를 입력해 주세요\n");
+	}
 
 }

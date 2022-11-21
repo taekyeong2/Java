@@ -143,7 +143,7 @@ public class AnonManage {
 		AnonVO anonVO = new AnonVO();
 		System.out.println("닉네임 > ");
 		anonVO.setAnonName(sc.nextLine());
-		System.out.println("패스워드 > ");
+		System.out.println("비밀번호 > ");
 		anonVO.setAnonPw(sc.nextLine());
 		System.out.println("제목 > ");
 		anonVO.setAnonTitle(sc.nextLine());
@@ -226,7 +226,7 @@ public class AnonManage {
 			}
 		} else {
 			// 본인이 아니면 출력
-			System.out.println("패스워드가 일치하지 않습니다.\n");
+			System.out.println("비밀번호가 일치하지 않습니다.\n");
 			return;
 		}
 	}
@@ -234,7 +234,7 @@ public class AnonManage {
 	// 본인확인(비번으로)
 	private boolean check(int anonNum) {
 		boolean check = false;
-		System.out.println("패스워드를 입력해주세요");
+		System.out.println("비밀번호를 입력해주세요");
 		String checkPw = sc.nextLine();
 		// 게시물 번호로 단건조회
 		AnonVO anonVO = anonDAO.selectOne(anonNum);
@@ -271,7 +271,7 @@ public class AnonManage {
 			}
 		} else {
 			// 본인이 아니면 출력
-			System.out.println("패스워드가 일치하지 않습니다.\n");
+			System.out.println("비밀번호가 일치하지 않습니다.\n");
 			return;
 		}
 	}
@@ -301,18 +301,14 @@ public class AnonManage {
 		AnonCommentVO anonCVO = new AnonCommentVO();
 		System.out.println("닉네임 > ");
 		anonCVO.setAnonCName(sc.nextLine());
-		System.out.println("패스워드 > ");
+		System.out.println("비밀번호 > ");
 		anonCVO.setAnonCPw(sc.nextLine());
 		System.out.println("댓글 > ");
 		anonCVO.setAnonCContent(sc.nextLine());
 		anonCVO.setAnonNum(anonNum);
-		if (checklist.isEmpty()) {
-			anonCVO.setAnonCNum(1);
-		} else {
-			int num = checklist.size();
-			++num;
-			anonCVO.setAnonCNum(num);
-		}
+		int num = checklist.size();
+		++num;
+		anonCVO.setAnonCNum(num);
 
 		return anonCVO;
 	}
@@ -321,26 +317,41 @@ public class AnonManage {
 	private void anonCUpdate(int anonNum) {
 		System.out.println("수정할 댓글번호를 입력해주세요");
 		int anonCNum = anonCoInput();
+		int checkCNum = commentCheck(anonNum, anonCNum);
 		// 입력받은 댓글번호로 단건조회 후 VO변수에 담아줌
 		List<AnonCommentVO> anonCVO = anonCDAO.selectAll(anonNum);
-		if (anonCVO.isEmpty()) {
-			System.out.println("없는 댓글 입니다.\n");
-		} else {
-			for (AnonCommentVO anonCheck : anonCVO) {
+		for (AnonCommentVO anonCheck : anonCVO) {
+			if (checkCNum > 0) {
 				if (anonCheck.getAnonCNum() == anonCNum) {
-					if (checkC(anonCNum, anonNum) == true) {
+					String anonCPw = checkPw();
+					if (anonCheck.getAnonCPw().equals(anonCPw)) {
 						// 댓글수정
 						String content = updateContent();
 						anonCDAO.update(content, anonCNum);
 					} else {
 						// 일치하지 않으면 출력
-						System.out.println("패스워드가 일치하지 않습니다.\n");
+						System.out.println("비밀번호가 일치하지 않습니다.\n");
 						return;
 					}
-
 				}
+			} else{
+				System.out.println("댓글이 존재하지 않습니다.\n");
+				return;
 			}
 		}
+	}
+
+	// 댓글 유무확인
+	private int commentCheck(int anonNum, int anonCNum) {
+		int anonCheckNum = anonCNum;
+		int checkCNum = 0;
+		List<AnonCommentVO> anonCVO = anonCDAO.selectAll(anonNum);
+		for (AnonCommentVO anonCheck : anonCVO) {
+			if (anonCheck.getAnonCNum() == anonCheckNum) {
+				checkCNum += anonCheck.getAnonCNum();
+			}
+		}
+		return checkCNum;
 
 	}
 
@@ -352,22 +363,10 @@ public class AnonManage {
 	}
 
 	// 댓글 비밀번호 확인
-	private boolean checkC(int anonCNum, int anonNum) {
-		boolean checkC = false;
-		System.out.println("패스워드를 입력해주세요");
+	private String checkPw() {
+		System.out.println("비밀번호를 입력해주세요");
 		String checkPw = sc.nextLine();
-		// 댓글 번호로 단건출력한 값 담기
-		List<AnonCommentVO> anonCVO = anonCDAO.selectAll(anonNum);
-		for (AnonCommentVO checkNum : anonCVO) {
-			if (checkNum.getAnonCNum() == anonCNum) {
-				if (checkPw.equals(checkNum.getAnonCPw())) {
-					checkC = true;
-				}
-			}
-		}
-		return checkC;
-
-		// 입력한 패스워드와 담은 값의 패스워드 비교
+		return checkPw;
 
 	}
 
@@ -375,26 +374,28 @@ public class AnonManage {
 	private void anonCDelete(int anonNum) {
 		System.out.println("삭제할 댓글번호를 입력해주세요");
 		int anonCNum = anonCoInput();
+		int checkCNum = commentCheck(anonNum, anonCNum);
 		// 입력받은 댓글번호로 단건조회 후 VO변수에 담아줌
 		List<AnonCommentVO> anonCVO = anonCDAO.selectAll(anonNum);
-		if (anonCVO == null) {
-			System.out.println("없는 댓글 입니다.\n");
-		} else {
-			for (AnonCommentVO anonCheck : anonCVO) {
+		for (AnonCommentVO anonCheck : anonCVO) {
+			if (checkCNum > 0) {
 				if (anonCheck.getAnonCNum() == anonCNum) {
-					if (checkC(anonCNum, anonNum) == true) {
+					String anonCPw = checkPw();
+					if (anonCheck.getAnonCPw().equals(anonCPw)) {
 						// 삭제
 						anonCDAO.delete(anonCNum);
 					} else {
 						// 일치하지 않으면 출력
-						System.out.println("패스워드가 일치하지 않습니다.\n");
+						System.out.println("비밀번호가 일치하지 않습니다.\n");
 						return;
 					}
 
 				}
+			} else{
+				System.out.println("댓글이 존재하지 않습니다.\n");
+				return;
 			}
 		}
-
 	}
 
 	// 글검색 - 닉네임으로
@@ -432,7 +433,7 @@ public class AnonManage {
 
 	// 메뉴잘못선택시 출력
 	private void error() {
-		System.out.println("올바른 메뉴를 입려해 주세요\n");
+		System.out.println("올바른 메뉴를 입력해 주세요\n");
 	}
 
 }

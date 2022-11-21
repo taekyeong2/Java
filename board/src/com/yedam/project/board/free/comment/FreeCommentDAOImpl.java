@@ -157,7 +157,8 @@ public class FreeCommentDAOImpl extends DAO implements FreeCommentDAO {
 			connect();
 			stmt = conn.createStatement();
 			String sql = "DELETE FROM free_comment WHERE f_num = "+ freeNum;
-
+			stmt.executeUpdate(sql);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

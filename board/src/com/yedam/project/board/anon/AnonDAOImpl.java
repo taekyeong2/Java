@@ -103,7 +103,7 @@ public class AnonDAOImpl extends DAO implements AnonDAO {
 			int result = pstmt.executeUpdate();
 			if(result > 0) {
 				//작성된 필드가 있다면
-				System.out.println("정상적으로  등록되었습니다.\n");
+				System.out.println("정상적으로 등록되었습니다.\n");
 			}else {
 				//작성된 필드가 없다면
 				System.out.println("정상적으로 등록되지 않았습니다.\n");
