@@ -33,8 +33,6 @@ public class FreeCommentVO {
 
 
 	public int getFreeCNum() {
-		int num = 0;
-		this.freeCNum = ++num;
 		return freeCNum;
 	}
 

@@ -78,7 +78,6 @@ public class NoticeDAOImpl extends DAO implements NoticeDAO {
 	public void insert(NoticeVO noticeVO) {
 		try {
 			connect();
-			noticeVO.getNoticeNum();
 			String sql = "INSERT INTO notice (m_Id, n_title, n_content) VALUES (?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, LoginControl.getLoginInfo().getMemId());
@@ -88,11 +87,9 @@ public class NoticeDAOImpl extends DAO implements NoticeDAO {
 			int result = pstmt.executeUpdate();
 
 			if (result > 0) {
-				System.out.println("정상적으로 등록되었습니다.");
-				System.out.println();
+				System.out.println("정상적으로 등록되었습니다.\n");
 			} else {
-				System.out.println("정상적으로 등록되지 않았습니다.");
-				System.out.println();
+				System.out.println("정상적으로 등록되지 않았습니다.\n");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -114,11 +111,9 @@ public class NoticeDAOImpl extends DAO implements NoticeDAO {
 			int result = pstmt.executeUpdate();
 
 			if (result > 0) {
-				System.out.println("정상적으로 수정되었습니다.");
-				System.out.println();
+				System.out.println("정상적으로 수정되었습니다.\n");
 			} else {
-				System.out.println("정상적으로 수정되지 않았습니다.");
-				System.out.println();
+				System.out.println("정상적으로 수정되지 않았습니다.\n");
 			}
 
 		} catch (Exception e) {
@@ -138,11 +133,9 @@ public class NoticeDAOImpl extends DAO implements NoticeDAO {
 
 			int result = stmt.executeUpdate(sql);
 			if (result > 0) {
-				System.out.println("정상적으로 삭제되었습니다..");
-				System.out.println();
+				System.out.println("정상적으로 삭제되었습니다.\n");
 			} else {
-				System.out.println("정상적으로 삭제되지 않았습니다.");
-				System.out.println();
+				System.out.println("정상적으로 삭제되지 않았습니다.\n");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

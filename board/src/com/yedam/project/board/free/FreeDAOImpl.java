@@ -104,7 +104,6 @@ public class FreeDAOImpl extends DAO implements FreeDAO {
 	public void insert(FreeVO freeVO) {
 		try {
 			connect();
-			freeVO.getFreeNum();
 			String sql = "INSERT INTO free (m_Id, f_title, f_content) VALUES (?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, LoginControl.getLoginInfo().getMemId());
@@ -114,11 +113,9 @@ public class FreeDAOImpl extends DAO implements FreeDAO {
 			int result = pstmt.executeUpdate();
 
 			if (result > 0) {
-				System.out.println("정상적으로 등록되었습니다.");
-				System.out.println();
+				System.out.println("정상적으로 등록되었습니다.\n");
 			} else {
-				System.out.println("정상적으로 등록되지 않았습니다.");
-				System.out.println();
+				System.out.println("정상적으로 등록되지 않았습니다.\n");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -140,11 +137,9 @@ public class FreeDAOImpl extends DAO implements FreeDAO {
 			int result = pstmt.executeUpdate();
 
 			if (result > 0) {
-				System.out.println("정상적으로 수정되었습니다.");
-				System.out.println();
+				System.out.println("정상적으로 수정되었습니다.\n");
 			} else {
-				System.out.println("정상적으로 수정되지 않았습니다.");
-				System.out.println();
+				System.out.println("정상적으로 수정되지 않았습니다.\n");
 			}
 
 		} catch (Exception e) {
@@ -163,12 +158,11 @@ public class FreeDAOImpl extends DAO implements FreeDAO {
 			String sql = "DELETE FROM free WHERE f_num = " + freeNum;
 
 			int result = stmt.executeUpdate(sql);
+			
 			if (result > 0) {
-				System.out.println("정상적으로 삭제되었습니다.");
-				System.out.println();
+				System.out.println("정상적으로 삭제되었습니다.\n");
 			} else {
-				System.out.println("정상적으로 삭제되지 않았습니다.");
-				System.out.println();
+				System.out.println("정상적으로 삭제되지 않았습니다.\n");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

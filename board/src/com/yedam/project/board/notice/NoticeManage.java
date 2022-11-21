@@ -1,11 +1,10 @@
 package com.yedam.project.board.notice;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.yedam.project.board.anon.comment.AnonCommentVO;
 import com.yedam.project.board.common.LoginControl;
-import com.yedam.project.board.free.FreeVO;
 import com.yedam.project.board.free.comment.FreeCommentVO;
 import com.yedam.project.board.notice.comment.NoticeCommentDAO;
 import com.yedam.project.board.notice.comment.NoticeCommentDAOImpl;
@@ -35,11 +34,10 @@ public class NoticeManage {
 			case 2:
 				// 조회
 				boolean crun;
-				System.out.println("조회할 게시글 번호를 입력해 주세요.");
-				System.out.println("게시글 번호 > ");
-				int selectNum = Integer.parseInt(sc.nextLine());
+				int selectNum = boardNumInput();
 				crun = selectCheck(selectNum);
 				while (crun) {
+					//조회한 게시글 출력
 					notiSelect(selectNum);
 					// 메뉴출력
 					menuPrint();
@@ -53,6 +51,7 @@ public class NoticeManage {
 					case 2:
 						// 삭제
 						notiDelete(selectNum);
+						//삭제시 뒤로가기
 						crun = boardCheck(selectNum);
 						break;
 					case 3:
@@ -72,6 +71,7 @@ public class NoticeManage {
 						crun = false;
 						break;
 					default:
+						//잘못된 번호 입력시 에러메세지
 						error();
 					}
 				}
@@ -81,6 +81,7 @@ public class NoticeManage {
 				run = false;
 				break;
 			default:
+				//잘못된 번호 입력시 에러메세지
 				error();
 			}
 
@@ -90,8 +91,7 @@ public class NoticeManage {
 
 	//게시판이름 출력
 	private void boardType() {
-		System.out.println("< 공지게시판 >");
-		System.out.println();
+		System.out.println("< 공지게시판 >\n");
 	}
 
 	// 전체 게시글 불러오기
@@ -106,9 +106,9 @@ public class NoticeManage {
 
 	// 엄마메뉴 출력
 	private void momMenuPrint() {
-		System.out.println("================================");
+		System.out.println("=========================");
 		System.out.println(" 1.작성 | 2.조회 | 0.뒤로가기 ");
-		System.out.println("================================");
+		System.out.println("=========================");
 	}
 
 	// 메뉴선택
@@ -125,8 +125,7 @@ public class NoticeManage {
 			NoticeVO notiVO = writeInfo();
 			notiDAO.insert(notiVO);
 		} else {
-			System.out.println("권한이 없습니다.");
-			System.out.println();
+			System.out.println("권한이 없습니다.\n");
 			return;
 		}
 
@@ -153,40 +152,53 @@ public class NoticeManage {
 
 		return notiVO;
 	}
+	
+	//조회할 게시글 번호
+	public int boardNumInput() {
+		System.out.println("조회할 게시글 번호를 입력해 주세요.");
+		System.out.println("게시글 번호 > ");
+		int selectNum = Integer.parseInt(sc.nextLine());
+		return selectNum;
+	}
+
 
 	// 게시글 단건 유무
 	private boolean selectCheck(int notiNum) {
 		boolean check = true;
 		NoticeVO notiVO = notiDAO.selectOne(notiNum);
 		if (notiVO == null) {
-			System.out.println("없는 게시글 입니다.");
-			System.out.println();
+			System.out.println("없는 게시글 입니다.\n");
 			check = false;
 		}
 		return check;
 	}
 
-	// 게시글 단건조회
+	// 게시글 단건조회 + 게시글안의 댓글 조회
 	private void notiSelect(int notiNum) {
 		NoticeVO notiVO = notiDAO.selectOne(notiNum);
-		List<NoticeCommentVO> list = notiCDAO.selectAll(notiNum);
 		String notiStr = "";
-		String notiCStr = "";
 		notiStr += notiVO;
+		System.out.println(notiStr);
+		noticeCoSelect(notiNum);
+	}
+	
+	//조회할 게시물에 있는 댓글 전체조회
+	private void noticeCoSelect(int notiNum) {
+		List<NoticeCommentVO> list = notiCDAO.selectAll(notiNum);
+		String notiCStr = "";
 		for (NoticeCommentVO comment : list) {
 			notiCStr += comment;
 		}
-		System.out.println(notiStr);
-		System.out.println("\n" + "댓글 > ");
-		System.out.println(notiCStr);
+			System.out.println("\n" + "댓글 > ");
+			System.out.println(notiCStr);
 	}
+	
 
 	// 메뉴출력
 	private void menuPrint() {
-		System.out.println("=================================");
-		System.out.println("1.수정 | 2.삭제 ");
-		System.out.println("3.댓글작성 |4.댓글수정 |5.댓글삭제 |0.뒤로가기");
-		System.out.println("=================================");
+		System.out.println("========================================================");
+		System.out.println("1.수정 | 2.삭제 | 3.댓글작성 | 4.댓글수정 | 5.댓글삭제 | 0.뒤로가기");
+		System.out.println("========================================================");
 	}
 
 	// 게시글 수정
@@ -202,8 +214,7 @@ public class NoticeManage {
 				return;
 			}
 		} else {
-			System.out.println("권한이 없습니다.");
-			System.out.println();
+			System.out.println("권한이 없습니다.\n");
 			return;
 		}
 
@@ -230,8 +241,7 @@ public class NoticeManage {
 				return;
 			}
 		} else {
-			System.out.println("권한이 없습니다.");
-			System.out.println();
+			System.out.println("권한이 없습니다.\n");
 			return;
 		}
 	}
@@ -267,13 +277,17 @@ public class NoticeManage {
 	private void notiCUpdate() {
 		System.out.println("수정할 댓글번호를 입력해주세요");
 		int notiCNum = notiCoInput();
-		if (checkC(notiCNum) == true) {
-			String content = updateContent();
-			notiCDAO.update(notiCNum, content);
+		NoticeCommentVO notiCVO = notiCDAO.selectOne(notiCNum);
+		if (notiCVO == null) {
+			System.out.println("없는댓글입니다.\n");
 		} else {
-			System.out.println("본인이 아닙니다.");
-			System.out.println();
-			return;
+			if (checkC(notiCNum) == true) {
+				String content = updateContent();
+				notiCDAO.update(notiCNum, content);
+			} else {
+				System.out.println("본인이 아닙니다.\n");
+				return;
+			}
 		}
 	}
 
@@ -299,20 +313,22 @@ public class NoticeManage {
 	private void notiCDelete() {
 		System.out.println("삭제할 댓글번호를 입력해주세요");
 		int notiCNum = notiCoInput();
-		if (checkC(notiCNum) == true) {
-			notiCDAO.delete(notiCNum);
+		NoticeCommentVO notiCVO = notiCDAO.selectOne(notiCNum);
+		if (notiCVO == null) {
+			System.out.println("없는댓글입니다.\n");
 		} else {
-			System.out.println("본인이 아닙니다.");
-			System.out.println();
-			System.out.println();
-			return;
+			if (checkC(notiCNum) == true) {
+				notiCDAO.delete(notiCNum);
+			} else {
+				System.out.println("본인이 아닙니다.\n");
+				return;
+			}
 		}
 	}
 
 	// 메뉴잘못선택시 출력
 	private void error() {
-		System.out.println("올바른 메뉴를 입려해 주세요");
-		System.out.println();
+		System.out.println("올바른 메뉴를 입려해 주세요\n");
 	}
 
 }

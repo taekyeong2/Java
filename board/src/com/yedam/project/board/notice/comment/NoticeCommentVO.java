@@ -38,8 +38,6 @@ public class NoticeCommentVO {
 
 
 	public int getNoticeCNum() {
-		int num = 0;
-		this.noticeCNum = ++num;  
 		return noticeCNum;
 	}
 

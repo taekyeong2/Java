@@ -81,7 +81,6 @@ public class NoticeCommentDAOImpl extends DAO implements NoticeCommentDAO {
 	public void insert(NoticeCommentVO noticeCVO) {
 		try {
 			connect();
-			noticeCVO.getNoticeCNum();
 			String sql = "INSERT INTO notice_comment (m_id, nc_content, n_num) VALUES (?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, LoginControl.getLoginInfo().getMemId());
@@ -91,11 +90,9 @@ public class NoticeCommentDAOImpl extends DAO implements NoticeCommentDAO {
 			int result = pstmt.executeUpdate();
 			
 			if(result > 0) {
-				System.out.println("정상적으로 등록되었습니다.");
-				System.out.println();
+				System.out.println("정상적으로 등록되었습니다.\n");
 			}else {
-				System.out.println("정상적으로 등록되지 않았습니다.");
-				System.out.println();
+				System.out.println("정상적으로 등록되지 않았습니다.\n");
 			}
 			
 
@@ -120,11 +117,9 @@ public class NoticeCommentDAOImpl extends DAO implements NoticeCommentDAO {
 			int result = pstmt.executeUpdate();
 			
 			if(result > 0) {
-				System.out.println("정상적으로 수정되었습니다.");
-				System.out.println();
+				System.out.println("정상적으로 수정되었습니다.\n");
 			}else {
-				System.out.println("정상적으로 수정되지 않았습니다.");
-				System.out.println();
+				System.out.println("정상적으로 수정되지 않았습니다.\n");
 			}
 
 		} catch (Exception e) {
@@ -143,11 +138,9 @@ public class NoticeCommentDAOImpl extends DAO implements NoticeCommentDAO {
 			String sql = "DELETE FROM notice_comment WHERE nc_num = "+ noticeCNum;
 			int result = stmt.executeUpdate(sql);
 			if(result > 0) {
-				System.out.println("정상적으로 삭제되었습니다..");
-				System.out.println();
+				System.out.println("정상적으로 삭제되었습니다.\n");
 			}else {
-				System.out.println("정상적으로 삭제되지 않았습니다.");
-				System.out.println();
+				System.out.println("정상적으로 삭제되지 않았습니다.\n");
 			}
 			
 		} catch (Exception e) {
@@ -165,12 +158,7 @@ public class NoticeCommentDAOImpl extends DAO implements NoticeCommentDAO {
 			connect();
 			stmt = conn.createStatement();
 			String sql = "DELETE FROM notice_comment WHERE n_num = "+ noticeNum;
-			
-			int result = stmt.executeUpdate(sql);
-			if(result == 0) {
-				System.out.println("정상적으로 삭제되지 않았습니다.");
-				System.out.println();
-			}
+
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -48,9 +48,9 @@ public class Management {
 
 	// 메뉴 출력
 	private void momMenuPrint() {
-		System.out.println("================================");
-		System.out.println("1.로그인 |2.회원가입 |3.익명게시판 |0.종료");
-		System.out.println("================================");
+		System.out.println("======================================");
+		System.out.println("1.로그인 | 2.회원가입 | 3.익명게시판 | 0.종료");
+		System.out.println("======================================");
 	}
 
 	// 메뉴선택
@@ -65,6 +65,7 @@ public class Management {
 		MemberVO memVO = inputMemInfo();
 		memDAO.insert(memVO);
 	}
+	
 	//회원정보입력
 	private MemberVO inputMemInfo() {
 		MemberVO memberInfo = new MemberVO();
@@ -72,18 +73,13 @@ public class Management {
 		memberInfo.setMemId(sc.nextLine());
 		System.out.println("패스워드 > ");
 		memberInfo.setMemPw(sc.nextLine());
-		System.out.println("이름 > ");
-		memberInfo.setMemName(sc.nextLine());
-		System.out.println("이메일(-----@-----.com) > ");
-		memberInfo.setMemEmail(sc.nextLine());
 		
 		return memberInfo;
 	}
 	
 	//메뉴잘못선택시 출력
 	private void error() {
-			System.out.println("올바른 메뉴를 입력해 주세요");	
-			System.out.println();
+			System.out.println("올바른 메뉴를 입력해 주세요\n");	
 	}
 
 

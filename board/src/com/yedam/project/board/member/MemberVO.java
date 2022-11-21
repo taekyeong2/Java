@@ -4,8 +4,6 @@ public class MemberVO {
 	private String memId;
 	private String memPw;
 	private int memRole;
-	private String memName;
-	private String memEmail;
 	
 	
 	public String getMemId() {
@@ -26,19 +24,6 @@ public class MemberVO {
 	public void setMemRole(int memRole) {
 		this.memRole = memRole;
 	}
-	public String getMemName() {
-		return memName;
-	}
-	public void setMemName(String memName) {
-		this.memName = memName;
-	}
-	public String getMemEmail() {
-		return memEmail;
-	}
-	public void setMemEmail(String memEmail) {
-		this.memEmail = memEmail;
-	}
-	
 	
 	@Override
 	public String toString() {

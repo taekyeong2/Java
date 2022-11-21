@@ -39,12 +39,10 @@ public class MemberDAOImpl extends DAO implements MemberDAO {
 						loginInfo.setMemPw(rs.getString("m_pw"));
 						loginInfo.setMemRole(rs.getInt("m_role"));
 					} else {
-						System.out.println("비밀번호가 일치하지 않습니다.");
-						System.out.println();
+						System.out.println("비밀번호가 일치하지 않습니다.\n");
 					}
 				} else {
-					System.out.println("아이디가 존재하지 않습니다.");
-					System.out.println();
+					System.out.println("아이디가 존재하지 않습니다.\n");
 				}
 			
 
@@ -66,17 +64,13 @@ public class MemberDAOImpl extends DAO implements MemberDAO {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, memberVO.getMemId());
 			pstmt.setString(2, memberVO.getMemPw());
-			pstmt.setString(3, memberVO.getMemName());
-			pstmt.setString(4, memberVO.getMemEmail());
 
 			int result = pstmt.executeUpdate();
 
 			if (result > 0) {
-				System.out.println("정상적으로 등록되었습니다.");
-				System.out.println();
+				System.out.println("정상적으로 등록되었습니다.\n");
 			} else {
-				System.out.println("정상적으로 등록되지 않았습니다.");
-				System.out.println();
+				System.out.println("정상적으로 등록되지 않았습니다.\n");
 			}
 
 		} catch (Exception e) {

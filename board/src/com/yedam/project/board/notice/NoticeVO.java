@@ -24,8 +24,6 @@ public class NoticeVO {
 
 
 	public int getNoticeNum() {
-		int num = 0;
-		this.noticeNum = ++num;
 		return noticeNum;
 	}
 

@@ -49,7 +49,7 @@ public class LoginControl {
 	    // 메뉴출력
 		private void menuPrint() {
 			System.out.println("================================");
-			System.out.println(" 1.공지게시판 | 2.자유게시판 | 0.로그아웃 ");
+			System.out.println("1.공지게시판 | 2.자유게시판 | 0.로그아웃 ");
 			System.out.println("================================");
 		}
 	
@@ -88,8 +88,7 @@ public class LoginControl {
 	
 	//메뉴잘못선택시 출력
 	private void error() {
-			System.out.println("올바른 메뉴를 입려해 주세요");
-			System.out.println();
+			System.out.println("올바른 메뉴를 입려해 주세요.\n");
 	}
 
 	

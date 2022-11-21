@@ -16,7 +16,7 @@ public interface AnonCommentDAO {
 	void insert (AnonCommentVO anonCVO);
 	
 	//댓글 수정
-	void update (int anonCNum, String anonCContent);
+	void update (String anonCContent, int anonCNum);
 	
 	//댓글 삭제
 	void delete (int anonCNum);

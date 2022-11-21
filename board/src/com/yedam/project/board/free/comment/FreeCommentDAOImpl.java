@@ -80,21 +80,19 @@ public class FreeCommentDAOImpl extends DAO implements FreeCommentDAO {
 	public void insert(FreeCommentVO freeCVO) {
 		try {
 			connect();
-			freeCVO.getFreeCNum();
-			String sql = "INSERT INTO free_comment (m_id, fc_content, f_num) VALUES (?,?,?)";
+			String sql = "INSERT INTO free_comment VALUES (?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, LoginControl.getLoginInfo().getMemId());
-			pstmt.setString(2, freeCVO.getFreeCContent());
-			pstmt.setInt(3, freeCVO.getFreeNum());
+			pstmt.setInt(2, freeCVO.getFreeNum());
+			pstmt.setInt(3, freeCVO.getFreeCNum());
+			pstmt.setString(4, freeCVO.getFreeCContent());
 			
 			int result = pstmt.executeUpdate();
 			
 			if(result > 0) {
-				System.out.println("정상적으로 등록되었습니다.");
-				System.out.println();
+				System.out.println("정상적으로 등록되었습니다.\n");
 			}else {
-				System.out.println("정상적으로 등록되지 않았습니다.");
-				System.out.println();
+				System.out.println("정상적으로 등록되지 않았습니다.\n");
 			}
 			
 
@@ -118,11 +116,9 @@ public class FreeCommentDAOImpl extends DAO implements FreeCommentDAO {
 			int result = pstmt.executeUpdate();
 			
 			if(result > 0) {
-				System.out.println("정상적으로 수정되었습니다.");
-				System.out.println();
+				System.out.println("정상적으로 수정되었습니다.\n");
 			}else {
-				System.out.println("정상적으로 수정되지 않았습니다.");
-				System.out.println();
+				System.out.println("정상적으로 수정되지 않았습니다.\n");
 			}
 
 		} catch (Exception e) {
@@ -141,11 +137,9 @@ public class FreeCommentDAOImpl extends DAO implements FreeCommentDAO {
 			String sql = "DELETE FROM free_comment WHERE fc_num = "+ freeCNum;
 			int result = stmt.executeUpdate(sql);
 			if(result > 0) {
-				System.out.println("정상적으로 삭제되었습니다..");
-				System.out.println();
+				System.out.println("정상적으로 삭제되었습니다.\n");
 			}else {
-				System.out.println("정상적으로 삭제되지 않았습니다.");
-				System.out.println();
+				System.out.println("정상적으로 삭제되지 않았습니다.\n");
 			}
 			
 		} catch (Exception e) {
@@ -163,13 +157,7 @@ public class FreeCommentDAOImpl extends DAO implements FreeCommentDAO {
 			connect();
 			stmt = conn.createStatement();
 			String sql = "DELETE FROM free_comment WHERE f_num = "+ freeNum;
-			
-			int result = stmt.executeUpdate(sql);
-			if(result == 0) {
-				System.out.println("정상적으로 삭제되지 않았습니다.");
-				System.out.println();
-			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

@@ -21,8 +21,6 @@ public class FreeVO {
 
 
 	public int getFreeNum() {
-		int num = 0;
-		this.freeNum = ++num;
 		return freeNum;
 	}
 

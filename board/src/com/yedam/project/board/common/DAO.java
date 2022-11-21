@@ -10,8 +10,7 @@ import java.sql.Statement;
 public class DAO {
 	
 	private String jdbcDriver = "org.sqlite.JDBC";
-	//private String jdbcUrl = "jdbc:sqlite:/‪D:/dev/boardDataBase.db";
-	private String jdbcUrl = "jdbc:sqlite:/D:/java_태경/개인프로젝트/boardDataBase.db";
+	private String jdbcUrl = "jdbc:sqlite:/D:/dev/boardDataBase.db";
 	
 	protected Connection conn;
 	protected Statement stmt;

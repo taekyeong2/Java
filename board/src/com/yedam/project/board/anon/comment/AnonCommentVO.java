@@ -2,11 +2,12 @@ package com.yedam.project.board.anon.comment;
 
 
 public class AnonCommentVO {
-	private String anonCName;
-	private String anonCPw;
-	private int anonNum;
-	private int anonCNum;
-	private String anonCContent;
+	//익명게시판 댓글 필드
+	private String anonCName; //댓글 닉네임
+	private String anonCPw; //댓글 패스워드
+	private int anonNum; //게시글 번호
+	private int anonCNum; //댓글번호
+	private String anonCContent; //댓글내용
 	
 	
 	
@@ -61,11 +62,8 @@ public class AnonCommentVO {
 
 
 	public int getAnonCNum() {
-		int num = 0;
-		this.anonCNum = ++num;
 		return anonCNum;
 	}
-
 
 
 
@@ -97,9 +95,11 @@ public class AnonCommentVO {
 	@Override
 	public String toString() {
 		String result = null;
+		//댓글닉네임이 없을때 출력
 		if(anonCName == null) {
 			result = "";
 		}else {
+			//닉네임이 있을때 출력
 		    result =  anonCNum + ") "+anonCName + ": " + anonCContent +"\n";
 		}
 		return result;

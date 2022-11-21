@@ -31,14 +31,17 @@ public class AnonCommentDAOImpl extends DAO implements AnonCommentDAO {
 		try {
 			connect();
 			stmt = conn.createStatement();
+			//게시글 번호로 해당 필드 전부 호출
 			String sql = "SELECT * FROM anon_comment WHERE a_num=" + anonNum;
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				findVO = new AnonCommentVO();
+				//댓글번호, 댓글닉네임, 댓글내용을 VO변수에 담기
 				findVO.setAnonCNum(rs.getInt("ac_num"));
 				findVO.setAnonCName(rs.getString("ac_name"));
 				findVO.setAnonCContent(rs.getString("ac_content"));
-
+				findVO.setAnonCPw(rs.getString("ac_pw"));
+				//담은내용들 리스트에 추가
 				list.add(findVO);
 			}
 		} catch (Exception e) {
@@ -57,6 +60,7 @@ public class AnonCommentDAOImpl extends DAO implements AnonCommentDAO {
 			connect();
 
 			stmt = conn.createStatement();
+			//댓글번호로 익명게시판 댓글 패스워드 호출
 			String sql = "SELECT ac_pw FROM anon_comment WHERE ac_num = " + anonCNum;
 			rs = stmt.executeQuery(sql);
 
@@ -78,22 +82,20 @@ public class AnonCommentDAOImpl extends DAO implements AnonCommentDAO {
 	public void insert(AnonCommentVO anonCVO) {
 		try {
 			connect();
-			anonCVO.getAnonCNum();
-			String sql = "INSERT INTO anon_comment (ac_name, ac_pw, ac_content, a_num) VALUES (?,?,?,?)";
+			String sql = "INSERT INTO anon_comment VALUES (?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, anonCVO.getAnonCName());
 			pstmt.setString(2, anonCVO.getAnonCPw());
-			pstmt.setString(3, anonCVO.getAnonCContent());
-			pstmt.setInt(4, anonCVO.getAnonNum());
+			pstmt.setInt(3, anonCVO.getAnonNum());
+			pstmt.setInt(4, anonCVO.getAnonCNum());
+			pstmt.setString(5, anonCVO.getAnonCContent());
 			
 			int result = pstmt.executeUpdate();
 			
 			if(result > 0) {
-				System.out.println("정상적으로 등록되었습니다.");
-				System.out.println();
+				System.out.println("정상적으로 등록되었습니다.\n");
 			}else {
-				System.out.println("정상적으로 등록되지 않았습니다.");
-				System.out.println();
+				System.out.println("정상적으로 등록되지 않았습니다.\n");
 			}
 
 		} catch (Exception e) {
@@ -106,7 +108,7 @@ public class AnonCommentDAOImpl extends DAO implements AnonCommentDAO {
 
 	//댓글 수정
 	@Override
-	public void update(int anonCNum, String anonCContent) {
+	public void update(String anonCContent, int anonCNum) {
 		try {
 			connect();
 			String sql = "UPDATE anon_comment SET ac_content = ? WHERE ac_num = ?";
@@ -117,11 +119,9 @@ public class AnonCommentDAOImpl extends DAO implements AnonCommentDAO {
 			int result = pstmt.executeUpdate();
 			
 			if(result > 0) {
-				System.out.println("정상적으로 수정되었습니다.");
-				System.out.println();
+				System.out.println("정상적으로 수정되었습니다.\n");
 			}else {
-				System.out.println("정상적으로 수정되지 않았습니다.");
-				System.out.println();
+				System.out.println("정상적으로 수정되지 않았습니다.\n");
 			}
 
 		} catch (Exception e) {
@@ -141,11 +141,9 @@ public class AnonCommentDAOImpl extends DAO implements AnonCommentDAO {
 			
 			int result = stmt.executeUpdate(sql);
 			if(result > 0) {
-				System.out.println("정상적으로 삭제되었습니다..");
-				System.out.println();
+				System.out.println("정상적으로 삭제되었습니다.\n");
 			}else {
-				System.out.println("정상적으로 삭제되지 않았습니다.");
-				System.out.println();
+				System.out.println("정상적으로 삭제되지 않았습니다.\n");
 			}
 			
 		} catch (Exception e) {
@@ -163,13 +161,8 @@ public class AnonCommentDAOImpl extends DAO implements AnonCommentDAO {
 			connect();
 			stmt = conn.createStatement();
 			String sql = "DELETE FROM anon_comment WHERE a_num = "+ anonNum;
-			
-			int result = stmt.executeUpdate(sql);
-			if(result == 0) {
-				System.out.println("정상적으로 삭제되지 않았습니다.");
-				System.out.println();
-			}
-			
+			stmt.executeUpdate(sql);
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
