@@ -63,6 +63,7 @@ public class Management {
 	// 회원가입
 	private void memberJoin() {
 		MemberVO memVO = inputMemInfo();
+		//아이디 중복체크
 		if(joinCheck(memVO) == true) {
 			memDAO.insert(memVO);					
 		}else {
@@ -84,7 +85,9 @@ public class Management {
 	//회원가입시 중복아이디 체크
 	private boolean joinCheck(MemberVO memberVO) {
 		boolean check = false;
+		//입력받은 VO의 아이디로 단건 조회 
 		MemberVO checkMem = memDAO.selectOne(memberVO);
+		//조회한 값이 없으면 중복 아님
 		if(checkMem == null) {
 			check = true;
 		}

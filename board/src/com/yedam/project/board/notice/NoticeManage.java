@@ -119,6 +119,7 @@ public class NoticeManage {
 
 	// 게시글작성
 	private void notiWrite() {
+		//관리자 권한 확인
 		boolean checkRole = checkRole();
 		if (checkRole == true) {
 			NoticeVO notiVO = writeInfo();
@@ -133,6 +134,7 @@ public class NoticeManage {
 	// 관리자 권한 확인
 	private boolean checkRole() {
 		boolean checkRole = false;
+		//현재 로그인정보의 역할값 가져옴
 		int role = LoginControl.getLoginInfo().getMemRole();
 		if (role == 0) {
 			checkRole = true;
@@ -177,6 +179,7 @@ public class NoticeManage {
 		String notiStr = "";
 		notiStr += notiVO;
 		System.out.println(notiStr);
+		//댓글조회
 		noticeCoSelect(notiNum);
 	}
 
@@ -228,6 +231,7 @@ public class NoticeManage {
 	// 게시글삭제 + 그게시글의 전체 댓글삭제
 	private void notiDelete(int notiNum) {
 		String confirm;
+		//역할값확인
 		if (checkRole() == true) {
 			System.out.println("게시글 내용을 삭제하시겠습니까? (y/n)");
 			confirm = sc.nextLine();
@@ -267,6 +271,7 @@ public class NoticeManage {
 		System.out.println("댓글 > ");
 		notiCVO.setNoticeCContent(sc.nextLine());
 		notiCVO.setNoticeNum(notiNum);
+		//번호누적
 		int num = checkList.size();
 		++num;
 		notiCVO.setNoticeCNum(num);

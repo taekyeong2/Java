@@ -305,7 +305,9 @@ public class AnonManage {
 		anonCVO.setAnonCPw(sc.nextLine());
 		System.out.println("댓글 > ");
 		anonCVO.setAnonCContent(sc.nextLine());
+		//댓글의 게시글번호는 현재 선택한게시글 번호
 		anonCVO.setAnonNum(anonNum);
+		//새로다는 댓글번호 => 리스트크기에서 +1
 		int num = checklist.size();
 		++num;
 		anonCVO.setAnonCNum(num);
@@ -316,14 +318,20 @@ public class AnonManage {
 	// 댓글수정
 	private void anonCUpdate(int anonNum) {
 		System.out.println("수정할 댓글번호를 입력해주세요");
+		//수정할 댓글 번호 입력
 		int anonCNum = anonCoInput();
+		//댓글번호로 댓글 유무확인
 		int checkCNum = commentCheck(anonNum, anonCNum);
-		// 입력받은 댓글번호로 단건조회 후 VO변수에 담아줌
+		// 조회한 게시글 번호로 전체조회 후 VO리스트변수에 담아줌
 		List<AnonCommentVO> anonCVO = anonCDAO.selectAll(anonNum);
+		//향상된 for문 사용해 보변수에 담아줌
 		for (AnonCommentVO anonCheck : anonCVO) {
+			//댓글유무 누적값이 0보다 많으면 통과
 			if (checkCNum > 0) {
+				//같은 게시글의 댓글 번호들 중 입력한 댓글 번호와 맞는 것을
 				if (anonCheck.getAnonCNum() == anonCNum) {
 					String anonCPw = checkPw();
+					//다시 입력한 비밀번호랑 가지고 있는 비밀번호를 비교해서
 					if (anonCheck.getAnonCPw().equals(anonCPw)) {
 						// 댓글수정
 						String content = updateContent();
@@ -335,6 +343,7 @@ public class AnonManage {
 					}
 				}
 			} else{
+				//댓글번호가 없으면
 				System.out.println("댓글이 존재하지 않습니다.\n");
 				return;
 			}
@@ -345,9 +354,13 @@ public class AnonManage {
 	private int commentCheck(int anonNum, int anonCNum) {
 		int anonCheckNum = anonCNum;
 		int checkCNum = 0;
+		//게시글번호로 전체조회한 값을 리스트에 넣어줌
 		List<AnonCommentVO> anonCVO = anonCDAO.selectAll(anonNum);
+		//향상된 for문을 사용해서 변수에 넣어줌
 		for (AnonCommentVO anonCheck : anonCVO) {
+			//변수의 댓글번호와 입력한 댓글번호가 맞으면
 			if (anonCheck.getAnonCNum() == anonCheckNum) {
+				//댓글번호값을 누적해서 더해주기
 				checkCNum += anonCheck.getAnonCNum();
 			}
 		}
@@ -373,14 +386,20 @@ public class AnonManage {
 	// 댓글삭제
 	private void anonCDelete(int anonNum) {
 		System.out.println("삭제할 댓글번호를 입력해주세요");
+		//삭제할 댓글 입력
 		int anonCNum = anonCoInput();
+		//댓글번호로 댓글 유무 확인
 		int checkCNum = commentCheck(anonNum, anonCNum);
 		// 입력받은 댓글번호로 단건조회 후 VO변수에 담아줌
 		List<AnonCommentVO> anonCVO = anonCDAO.selectAll(anonNum);
+		//향상된 for문 사용
 		for (AnonCommentVO anonCheck : anonCVO) {
+			//댓글유무메소드의 누적 값이 0보다 크면
 			if (checkCNum > 0) {
+				//변수안에 들어간 댓글번호들중 입력한 댓글번호와 같으면
 				if (anonCheck.getAnonCNum() == anonCNum) {
 					String anonCPw = checkPw();
+					//입력한 비밀번호와 변수의 비밀번호와 같으면
 					if (anonCheck.getAnonCPw().equals(anonCPw)) {
 						// 삭제
 						anonCDAO.delete(anonCNum);
@@ -392,6 +411,7 @@ public class AnonManage {
 
 				}
 			} else{
+				//댓글번호에 해당하는 댓글이 없으면
 				System.out.println("댓글이 존재하지 않습니다.\n");
 				return;
 			}

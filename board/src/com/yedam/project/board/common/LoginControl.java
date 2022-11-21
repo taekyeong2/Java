@@ -9,11 +9,11 @@ import com.yedam.project.board.member.MemberVO;
 import com.yedam.project.board.notice.NoticeManage;
 
 public class LoginControl {
-    //로그인. 회원가입 창 + 로그인 성공시 로그인한 정보 저장역할
+
 	Scanner sc = new Scanner(System.in);
 	MemberDAO memberDAO = MemberDAOImpl.getInstance();
 	
-	//어디서든 쓸수있게
+	//메소드 호출시 로그인 성공시 로그인한 정보 저장역할
 	private static MemberVO loginInfo = null;
 	public static MemberVO getLoginInfo() {
 		return loginInfo;
@@ -60,17 +60,21 @@ public class LoginControl {
 			return menNo;
 		}
 
-	//로그인 
+	//로그인 - 참 거짓으로 리턴
 	private boolean login() {
 		boolean login = true;
+		//로그인 정보 입력
 		MemberVO inputInfo = inputMemberInfo();
+		//로그인 정보로 조회한 값을 넣기
 		loginInfo = memberDAO.selectOne(inputInfo);
 		
 		//로그인성공
+		//로그인 정보가 없으면
 		if(loginInfo == null) {
 			System.out.println("아이디가 존재하지 않습니다.\n");
 			login = false;
-		}else {
+		}else {//로그인 정보가 있다면
+			//입력된 로그인 정보 비번과 입력한 비번이 같으면
 			if(loginInfo.getMemPw().equals(inputInfo.getMemPw())) {
 				System.out.println(loginInfo.getMemId()+"님 반갑습니다.\n");
 			}else {

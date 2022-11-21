@@ -163,6 +163,7 @@ public class FreeManage {
 		String freeStr = "";
 		freeStr += freeVO;
 		System.out.println(freeStr);
+		//댓글조회
 		freeCoSelect(freeNum);
 	}
 
@@ -263,6 +264,7 @@ public class FreeManage {
 		System.out.println("댓글 > ");
 		freeCVO.setFreeCContent(sc.nextLine());
 		freeCVO.setFreeNum(freeNum);
+		//리스트 사이즈+1 -> 댓글번호 증가
 		int num = checkList.size();
 		++num;
 		freeCVO.setFreeCNum(num);
@@ -277,8 +279,11 @@ public class FreeManage {
 		int checkCNum = commentCheck(freeNum, freeCNum);
 		List<FreeCommentVO> freeCVO = freeCDAO.selectAll(freeNum);
 		for (FreeCommentVO freeCheck : freeCVO) {
+			//댓글번호 유무
 			if (checkCNum > 0) {
+				//번호가 입력한 번호와 같으면
 				if (freeCheck.getFreeCNum() == freeCNum) {
+					//현재 아이디와 같은지 비교
 					if (freeCheck.getMemId().equals(memId)) {
 						String content = updateContent();
 						freeCDAO.update(freeCNum, content);
@@ -301,9 +306,11 @@ public class FreeManage {
 		List<FreeCommentVO> freeCVO = freeCDAO.selectAll(freeNum);
 		for (FreeCommentVO freeCheck : freeCVO) {
 			if (freeCheck.getFreeCNum() == freeCheckNum) {
+				//전체조회해서 입력한 댓글번호값과 같은 댓글번호 누적합
 				checkCNum += freeCheck.getFreeCNum();
 			}
 		}
+		//합 값 리턴
 		return checkCNum;
 
 	}
@@ -349,6 +356,7 @@ public class FreeManage {
 				str += freeVO;
 			}
 		}
+		//리스트 내용의 합이 없으면
 		if (str.equals("")) {
 			System.out.println("게시물이 없습니다.\n");
 		} else {
