@@ -57,6 +57,7 @@ public class NoticeManage {
 						notiCWrite(selectNum);
 						break;
 					case 4:
+
 						// 댓글수정
 						notiCUpdate(selectNum);
 						break;
@@ -117,7 +118,7 @@ public class NoticeManage {
 
 	// 게시글작성
 	private void notiWrite() {
-		//관리자 권한 확인
+		// 관리자 권한 확인
 		boolean checkRole = checkRole();
 		if (checkRole == true) {
 			NoticeVO notiVO = writeInfo();
@@ -132,7 +133,7 @@ public class NoticeManage {
 	// 관리자 권한 확인
 	private boolean checkRole() {
 		boolean checkRole = false;
-		//현재 로그인정보의 역할값 가져옴
+		// 현재 로그인정보의 역할값 가져옴
 		int role = LoginControl.getLoginInfo().getMemRole();
 		if (role == 0) {
 			checkRole = true;
@@ -175,7 +176,7 @@ public class NoticeManage {
 	private void notiSelect(int notiNum) {
 		NoticeVO notiVO = notiDAO.selectOne(notiNum);
 		System.out.println(notiVO);
-		//댓글조회
+		// 댓글조회
 		noticeCoSelect(notiNum);
 	}
 
@@ -200,7 +201,7 @@ public class NoticeManage {
 	// 게시글 수정
 	private void notiUpdate(int notiNum) {
 		String confirm;
-		//역할값확인
+		// 역할값확인
 		if (checkRole() == true) {
 			System.out.println("게시글 내용을 수정하시겠습니까? (y/n)");
 			confirm = sc.nextLine();
@@ -228,7 +229,7 @@ public class NoticeManage {
 	// 게시글삭제 + 그게시글의 전체 댓글삭제
 	private void notiDelete(int notiNum) {
 		String confirm;
-		//역할값확인
+		// 역할값확인
 		if (checkRole() == true) {
 			System.out.println("게시글 내용을 삭제하시겠습니까? (y/n)");
 			confirm = sc.nextLine();
@@ -268,7 +269,7 @@ public class NoticeManage {
 		System.out.println("댓글 > ");
 		notiCVO.setNoticeCContent(sc.nextLine());
 		notiCVO.setNoticeNum(notiNum);
-		//댓글리스트 사이즈를 통해 번호누적
+		// 댓글리스트 사이즈를 통해 번호누적
 		int num = checkList.size();
 		++num;
 		notiCVO.setNoticeCNum(num);
@@ -281,27 +282,27 @@ public class NoticeManage {
 		System.out.println("수정할 댓글번호를 입력해주세요");
 		int notiCNum = notiCoInput();
 		int checkCNum = commentCheck(notiNum, notiCNum);
-		List<NoticeCommentVO> notiCVO = notiCDAO.selectAll(notiNum);
-		for (NoticeCommentVO notiCheck : notiCVO) {
-			//입력한 댓글번호를 가진 댓글이 있는지 체크
-			if (checkCNum > 0) {
-				if (notiCheck.getNoticeCNum() == notiCNum) {
-					//본인 아이디가 맞는지 확인
-					if (notiCheck.getMemId().equals(memId)) {
-						String content = updateContent();
-						notiCDAO.update(notiCNum, content);
-					} else {
-						System.out.println("본인이 아닙니다.\n");
-						return;
-					}
+			List<NoticeCommentVO> notiCVO = notiCDAO.selectAll(notiNum);
+			for (NoticeCommentVO notiCheck : notiCVO) {
+				// 입력한 댓글번호를 가진 댓글이 있는지 체크
+				if (checkCNum > 0) {
+					if (notiCheck.getNoticeCNum() == notiCNum) {
+						// 본인 아이디가 맞는지 확인
+						if (notiCheck.getMemId().equals(memId)) {
+							String content = updateContent();
+							notiCDAO.update(notiCNum, content, notiNum);
+						} else {
+							System.out.println("본인이 아닙니다.\n");
+							return;
+						}
 
+					}
+				} else {
+					System.out.println("댓글이 존재하지 않습니다.\n");
+					return;
 				}
-			} else {
-				System.out.println("댓글이 존재하지 않습니다.\n");
-				return;
 			}
 		}
-	}
 	
 
 	// 댓글 유무확인
@@ -309,13 +310,12 @@ public class NoticeManage {
 		int checkCNum = 0;
 		List<NoticeCommentVO> notiCVO = notiCDAO.selectAll(notiNum);
 		for (NoticeCommentVO notiCheck : notiCVO) {
-			//댓글번호 더한값으로 존재유무확인
+			// 댓글번호 더한값으로 존재유무확인
 			if (notiCheck.getNoticeCNum() == notiCNum) {
 				checkCNum += notiCheck.getNoticeCNum();
 			}
 		}
 		return checkCNum;
-
 	}
 
 	// 수정할 댓글 번호
@@ -332,17 +332,17 @@ public class NoticeManage {
 		int checkCNum = commentCheck(notiNum, notiCNum);
 		List<NoticeCommentVO> notiCVO = notiCDAO.selectAll(notiNum);
 		for (NoticeCommentVO notiCheck : notiCVO) {
-			//댓글존재유무 체크
-			if(checkCNum > 0) {
-			if (notiCheck.getNoticeCNum() == notiCNum) {
-				//본인확인
-				if (notiCheck.getMemId().equals(memId)) {
-					notiCDAO.delete(notiCNum);
-				} else {
-					System.out.println("본인이 아닙니다.\n");
-					return;
+			// 댓글존재유무 체크
+			if (checkCNum > 0) {
+				if (notiCheck.getNoticeCNum() == notiCNum) {
+					// 본인확인
+					if (notiCheck.getMemId().equals(memId)) {
+						notiCDAO.delete(notiCNum, notiNum);
+					} else {
+						System.out.println("본인이 아닙니다.\n");
+						return;
+					}
 				}
-			}
 
 			} else {
 				System.out.println("댓글이 존재하지 않습니다.\n");

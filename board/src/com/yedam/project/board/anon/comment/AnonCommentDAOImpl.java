@@ -105,13 +105,14 @@ public class AnonCommentDAOImpl extends DAO implements AnonCommentDAO {
 
 	//댓글 수정
 	@Override
-	public void update(String anonCContent, int anonCNum) {
+	public void update(String anonCContent, int anonCNum, int anonNum) {
 		try {
 			connect();
-			String sql = "UPDATE anon_comment SET ac_content = ? WHERE ac_num = ?";
+			String sql = "UPDATE anon_comment SET ac_content = ? WHERE ac_num = ? and a_num=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, anonCContent);
 			pstmt.setInt(2, anonCNum);
+			pstmt.setInt(3, anonNum);
 			
 			int result = pstmt.executeUpdate();
 			
@@ -130,11 +131,11 @@ public class AnonCommentDAOImpl extends DAO implements AnonCommentDAO {
 
 	//댓글삭제
 	@Override
-	public void delete(int anonCNum) {
+	public void delete(int anonCNum, int anonNum) {
 		try {
 			connect();
 			stmt = conn.createStatement();
-			String sql = "DELETE FROM anon_comment WHERE ac_num = "+ anonCNum;
+			String sql = "DELETE FROM anon_comment WHERE ac_num = '"+ anonCNum +"' and a_num = '"+ anonNum+"'";
 			
 			int result = stmt.executeUpdate(sql);
 			if(result > 0) {

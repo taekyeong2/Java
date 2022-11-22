@@ -103,13 +103,14 @@ public class FreeCommentDAOImpl extends DAO implements FreeCommentDAO {
 
 	//댓글수정
 	@Override
-	public void update(int freeCNum, String freeCContent) {
+	public void update(int freeCNum, String freeCContent, int freeNum) {
 		try {
 			connect();
-			String sql = "UPDATE free_comment SET fc_content = ? WHERE fc_num = ?";
+			String sql = "UPDATE free_comment SET fc_content = ? WHERE fc_num = ? and f_num = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, freeCContent);
 			pstmt.setInt(2, freeCNum);
+			pstmt.setInt(3, freeNum);
 			
 			int result = pstmt.executeUpdate();
 			
@@ -128,11 +129,11 @@ public class FreeCommentDAOImpl extends DAO implements FreeCommentDAO {
 
 	//댓글삭제
 	@Override
-	public void delete(int freeCNum) {
+	public void delete(int freeCNum, int freeNum) {
 		try {
 			connect();
 			stmt = conn.createStatement();
-			String sql = "DELETE FROM free_comment WHERE fc_num = "+ freeCNum;
+			String sql = "DELETE FROM free_comment WHERE fc_num = '"+ freeCNum+"' and f_num = '"+freeNum+"'";
 			int result = stmt.executeUpdate(sql);
 			if(result > 0) {
 				System.out.println("정상적으로 삭제되었습니다.\n");

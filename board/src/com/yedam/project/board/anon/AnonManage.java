@@ -333,7 +333,7 @@ public class AnonManage {
 					if (anonCheck.getAnonCPw().equals(anonCPw)) {
 						// 댓글수정
 						String content = updateContent();
-						anonCDAO.update(content, anonCNum);
+						anonCDAO.update(content, anonCNum, anonNum);
 					} else {
 						// 일치하지 않으면 출력
 						System.out.println("비밀번호가 일치하지 않습니다.\n");
@@ -399,7 +399,7 @@ public class AnonManage {
 					//입력한 비밀번호와 변수의 비밀번호와 같으면
 					if (anonCheck.getAnonCPw().equals(anonCPw)) {
 						// 삭제
-						anonCDAO.delete(anonCNum);
+						anonCDAO.delete(anonCNum, anonNum);
 					} else {
 						// 일치하지 않으면 출력
 						System.out.println("비밀번호가 일치하지 않습니다.\n");

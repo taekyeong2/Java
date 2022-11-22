@@ -104,13 +104,14 @@ public class NoticeCommentDAOImpl extends DAO implements NoticeCommentDAO {
 	
 	//댓글수정
 	@Override
-	public void update(int noticeCNum, String noticeCContent) {
+	public void update(int noticeCNum, String noticeCContent, int noticeNum) {
 		try {
 			connect();
-			String sql = "UPDATE notice_comment SET nc_content = ? WHERE nc_num = ?";
+			String sql = "UPDATE notice_comment SET nc_content = ? WHERE nc_num = ? and n_num = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, noticeCContent);
 			pstmt.setInt(2, noticeCNum);
+			pstmt.setInt(3, noticeNum);
 			
 			int result = pstmt.executeUpdate();
 			
@@ -129,11 +130,11 @@ public class NoticeCommentDAOImpl extends DAO implements NoticeCommentDAO {
 
 	//댓글삭제
 	@Override
-	public void delete(int noticeCNum) {
+	public void delete(int noticeCNum, int noticeNum) {
 		try {
 			connect();
 			stmt = conn.createStatement();
-			String sql = "DELETE FROM notice_comment WHERE nc_num = "+ noticeCNum;
+			String sql = "DELETE FROM notice_comment WHERE nc_num = '"+ noticeCNum+"' and n_num='"+ noticeNum+"'";
 			int result = stmt.executeUpdate(sql);
 			if(result > 0) {
 				System.out.println("정상적으로 삭제되었습니다.\n");

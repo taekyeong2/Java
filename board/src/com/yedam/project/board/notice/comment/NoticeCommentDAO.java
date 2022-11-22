@@ -14,10 +14,10 @@ public interface NoticeCommentDAO {
 	void insert (NoticeCommentVO noticeCVO);
 		
 	//댓글 수정
-	void update (int noticeCNum, String noticeCContent);
+	void update (int noticeCNum, String noticeCContent, int noticeNum);
 		
 	//게시글 삭제
-	void delete (int noticeCNum);
+	void delete (int noticeCNum, int noticeNum);
 	
 	//댓글 전체 삭제
 	void deleteAll(int noticeNum);

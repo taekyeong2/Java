@@ -14,10 +14,10 @@ public interface AnonCommentDAO {
 	void insert (AnonCommentVO anonCVO);
 	
 	//댓글 수정
-	void update (String anonCContent, int anonCNum);
+	void update (String anonCContent, int anonCNum, int anonNum);
 	
 	//댓글 삭제
-	void delete (int anonCNum);
+	void delete (int anonCNum, int anonNum);
 	
 	//댓글 전체 삭제
 	void deleteAll(int anonNum);

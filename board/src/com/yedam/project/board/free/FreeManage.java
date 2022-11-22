@@ -297,7 +297,7 @@ public class FreeManage {
 					//현재 아이디와 같은지 비교
 					if (freeCheck.getMemId().equals(memId)) {
 						String content = updateContent();
-						freeCDAO.update(freeCNum, content);
+						freeCDAO.update(freeCNum, content, freeNum);
 					} else {
 						System.out.println("본인이 아닙니다.\n");
 						return;
@@ -346,7 +346,7 @@ public class FreeManage {
 				if (freeCheck.getFreeCNum() == freeCNum) {
 					//현재아이디와 비교후 
 					if (freeCheck.getMemId().equals(memId)) {
-						freeCDAO.delete(freeCNum);
+						freeCDAO.delete(freeCNum, freeNum);
 					} else {
 						System.out.println("본인이 아닙니다.\n");
 						return;

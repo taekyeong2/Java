@@ -13,10 +13,10 @@ public interface FreeCommentDAO {
 	void insert (FreeCommentVO freeCVO);
 		
 	//댓글 수정
-	void update (int freeCNum, String freeCContent);
+	void update (int freeCNum, String freeCContent, int freeNum);
 		
 	//게시글 삭제
-	void delete (int freeCNum);
+	void delete (int freeCNum, int freeNum);
 	
 	//댓글 전체 삭제
 	void deleteAll(int freeNum);
