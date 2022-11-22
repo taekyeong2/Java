@@ -6,8 +6,6 @@ import java.util.Scanner;
 import com.yedam.project.board.anon.comment.AnonCommentDAO;
 import com.yedam.project.board.anon.comment.AnonCommentDAOImpl;
 import com.yedam.project.board.anon.comment.AnonCommentVO;
-import com.yedam.project.board.common.LoginControl;
-import com.yedam.project.board.notice.NoticeVO;
 
 public class AnonManage {
 	// 스캐너 호출
@@ -352,14 +350,13 @@ public class AnonManage {
 
 	// 댓글 유무확인
 	private int commentCheck(int anonNum, int anonCNum) {
-		int anonCheckNum = anonCNum;
 		int checkCNum = 0;
 		//게시글번호로 전체조회한 값을 리스트에 넣어줌
 		List<AnonCommentVO> anonCVO = anonCDAO.selectAll(anonNum);
 		//향상된 for문을 사용해서 변수에 넣어줌
 		for (AnonCommentVO anonCheck : anonCVO) {
 			//변수의 댓글번호와 입력한 댓글번호가 맞으면
-			if (anonCheck.getAnonCNum() == anonCheckNum) {
+			if (anonCheck.getAnonCNum() == anonCNum) {
 				//댓글번호값을 누적해서 더해주기
 				checkCNum += anonCheck.getAnonCNum();
 			}

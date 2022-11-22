@@ -3,9 +3,6 @@ package com.yedam.project.board.anon.comment;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.yedam.project.board.anon.AnonDAO;
-import com.yedam.project.board.anon.AnonDAOImpl;
-import com.yedam.project.board.anon.AnonVO;
 import com.yedam.project.board.common.DAO;
 
 public class AnonCommentDAOImpl extends DAO implements AnonCommentDAO {

@@ -3,8 +3,6 @@ package com.yedam.project.board.free.comment;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.yedam.project.board.anon.AnonVO;
-import com.yedam.project.board.anon.comment.AnonCommentVO;
 import com.yedam.project.board.common.DAO;
 import com.yedam.project.board.common.LoginControl;
 

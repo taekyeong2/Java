@@ -3,9 +3,7 @@ package com.yedam.project.board.notice;
 import java.util.List;
 import java.util.Scanner;
 
-import com.yedam.project.board.anon.comment.AnonCommentVO;
 import com.yedam.project.board.common.LoginControl;
-import com.yedam.project.board.free.comment.FreeCommentVO;
 import com.yedam.project.board.notice.comment.NoticeCommentDAO;
 import com.yedam.project.board.notice.comment.NoticeCommentDAOImpl;
 import com.yedam.project.board.notice.comment.NoticeCommentVO;
@@ -176,9 +174,7 @@ public class NoticeManage {
 	// 게시글 단건조회 + 게시글안의 댓글 조회
 	private void notiSelect(int notiNum) {
 		NoticeVO notiVO = notiDAO.selectOne(notiNum);
-		String notiStr = "";
-		notiStr += notiVO;
-		System.out.println(notiStr);
+		System.out.println(notiVO);
 		//댓글조회
 		noticeCoSelect(notiNum);
 	}
@@ -204,6 +200,7 @@ public class NoticeManage {
 	// 게시글 수정
 	private void notiUpdate(int notiNum) {
 		String confirm;
+		//역할값확인
 		if (checkRole() == true) {
 			System.out.println("게시글 내용을 수정하시겠습니까? (y/n)");
 			confirm = sc.nextLine();
@@ -271,7 +268,7 @@ public class NoticeManage {
 		System.out.println("댓글 > ");
 		notiCVO.setNoticeCContent(sc.nextLine());
 		notiCVO.setNoticeNum(notiNum);
-		//번호누적
+		//댓글리스트 사이즈를 통해 번호누적
 		int num = checkList.size();
 		++num;
 		notiCVO.setNoticeCNum(num);
@@ -286,8 +283,10 @@ public class NoticeManage {
 		int checkCNum = commentCheck(notiNum, notiCNum);
 		List<NoticeCommentVO> notiCVO = notiCDAO.selectAll(notiNum);
 		for (NoticeCommentVO notiCheck : notiCVO) {
+			//입력한 댓글번호를 가진 댓글이 있는지 체크
 			if (checkCNum > 0) {
 				if (notiCheck.getNoticeCNum() == notiCNum) {
+					//본인 아이디가 맞는지 확인
 					if (notiCheck.getMemId().equals(memId)) {
 						String content = updateContent();
 						notiCDAO.update(notiCNum, content);
@@ -307,11 +306,11 @@ public class NoticeManage {
 
 	// 댓글 유무확인
 	private int commentCheck(int notiNum, int notiCNum) {
-		int notiCheckNum = notiCNum;
 		int checkCNum = 0;
 		List<NoticeCommentVO> notiCVO = notiCDAO.selectAll(notiNum);
 		for (NoticeCommentVO notiCheck : notiCVO) {
-			if (notiCheck.getNoticeCNum() == notiCheckNum) {
+			//댓글번호 더한값으로 존재유무확인
+			if (notiCheck.getNoticeCNum() == notiCNum) {
 				checkCNum += notiCheck.getNoticeCNum();
 			}
 		}
@@ -333,8 +332,10 @@ public class NoticeManage {
 		int checkCNum = commentCheck(notiNum, notiCNum);
 		List<NoticeCommentVO> notiCVO = notiCDAO.selectAll(notiNum);
 		for (NoticeCommentVO notiCheck : notiCVO) {
+			//댓글존재유무 체크
 			if(checkCNum > 0) {
 			if (notiCheck.getNoticeCNum() == notiCNum) {
+				//본인확인
 				if (notiCheck.getMemId().equals(memId)) {
 					notiCDAO.delete(notiCNum);
 				} else {

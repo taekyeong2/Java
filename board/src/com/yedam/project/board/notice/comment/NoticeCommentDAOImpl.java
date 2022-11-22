@@ -5,9 +5,6 @@ import java.util.List;
 
 import com.yedam.project.board.common.DAO;
 import com.yedam.project.board.common.LoginControl;
-import com.yedam.project.board.free.comment.FreeCommentDAO;
-import com.yedam.project.board.free.comment.FreeCommentDAOImpl;
-import com.yedam.project.board.free.comment.FreeCommentVO;
 
 public class NoticeCommentDAOImpl extends DAO implements NoticeCommentDAO {
 	

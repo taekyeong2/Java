@@ -3,7 +3,6 @@ package com.yedam.project.board.free;
 import java.util.List;
 import java.util.Scanner;
 
-import com.yedam.project.board.anon.comment.AnonCommentVO;
 import com.yedam.project.board.common.LoginControl;
 import com.yedam.project.board.free.comment.FreeCommentDAO;
 import com.yedam.project.board.free.comment.FreeCommentDAOImpl;
@@ -98,6 +97,7 @@ public class FreeManage {
 	// 전체 게시글 불러오기
 	private void freeSelectAll() {
 		List<FreeVO> freeVOList = freeDAO.selectAll();
+		//String 값 변환해서 [] 빼줌
 		String str = "";
 		for (FreeVO list : freeVOList) {
 			str += list;
@@ -141,6 +141,7 @@ public class FreeManage {
 	// 게시글 단건 유무
 	private boolean selectCheck(int freeNum) {
 		boolean check = true;
+		//게시글번호로 단건조회 후 값이 없으면 false
 		FreeVO freeVO = freeDAO.selectOne(freeNum);
 		if (freeVO == null) {
 			System.out.println("없는 게시글 입니다.\n");
@@ -160,16 +161,16 @@ public class FreeManage {
 	// 게시글 단건조회 + 그 게시물 댓글전체 조회
 	private void freeSelect(int freeNum) {
 		FreeVO freeVO = freeDAO.selectOne(freeNum);
-		String freeStr = "";
-		freeStr += freeVO;
-		System.out.println(freeStr);
+		System.out.println(freeVO);
 		//댓글조회
 		freeCoSelect(freeNum);
 	}
 
 	// 조회할 게시물에 있는 댓글 전체조회
 	private void freeCoSelect(int freeNum) {
+		//게시글번호를 가진 댓글 전부 조회
 		List<FreeCommentVO> list = freeCDAO.selectAll(freeNum);
+		//String 값 변환해서 출력
 		String freeCStr = "";
 		for (FreeCommentVO comment : list) {
 			freeCStr += comment;
@@ -188,6 +189,7 @@ public class FreeManage {
 	// 게시글 수정
 	private void freeUpdate(int freeNum) {
 		String confirm;
+		//본인확인 후 수정
 		if (check(freeNum) == true) {
 			System.out.println("게시글 내용을 수정하시겠습니까? (y/n)");
 			confirm = sc.nextLine();
@@ -206,7 +208,9 @@ public class FreeManage {
 	// 본인확인 - 아이디일치 확인
 	private boolean check(int freeNum) {
 		boolean check = false;
+		//게시글 번호 글 단건조회 후 
 		FreeVO freeVO = freeDAO.selectOne(freeNum);
+		//현재 아이디와 글의 아이디 비교
 		if (freeVO.getMemId().equals(memId)) {
 			check = true;
 		}
@@ -215,19 +219,20 @@ public class FreeManage {
 
 	// 수정할 내용
 	private String updateContent() {
-		String content = null;
 		System.out.println("내용 > ");
-		content = sc.nextLine();
+		String content = sc.nextLine();
 		return content;
 	}
 
 	// 게시글삭제 + 그게시글의 전체 댓글삭제
 	private void freeDelete(int freeNum) {
 		String confirm;
+		//본인확인 후 
 		if (check(freeNum) == true) {
 			System.out.println("게시글 내용을 삭제하시겠습니까? (y/n)");
 			confirm = sc.nextLine();
 			if (confirm.toLowerCase().equals("y")) {
+				//글과 그 글의 댓글들 삭제
 				freeDAO.delete(freeNum);
 				freeCDAO.deleteAll(freeNum);
 			} else {
@@ -241,9 +246,11 @@ public class FreeManage {
 	}
 
 	// 게시글 유무 확인
-	private boolean boardCheck(int anonNum) {
+	private boolean boardCheck(int freeNum) {
 		boolean check = true;
-		FreeVO freeVO = freeDAO.selectOne(anonNum);
+		//게시글 번호로 단건조회후 
+		FreeVO freeVO = freeDAO.selectOne(freeNum);
+		//조회된 값이 없으면
 		if (freeVO == null) {
 			check = false;
 		}
@@ -258,13 +265,15 @@ public class FreeManage {
 
 	// 댓글작성내용
 	private FreeCommentVO writeCInfo(int freeNum) {
+		//게시글 번호를 가진 댓글들 전체조회
 		List<FreeCommentVO> checkList = freeCDAO.selectAll(freeNum);
+		//댓글VO객체에 현재 아이디 입력한 댓글내용 게시글 번호 댓글번호 setter
 		FreeCommentVO freeCVO = new FreeCommentVO();
 		freeCVO.setMemId(memId);
 		System.out.println("댓글 > ");
 		freeCVO.setFreeCContent(sc.nextLine());
 		freeCVO.setFreeNum(freeNum);
-		//리스트 사이즈+1 -> 댓글번호 증가
+		//댓글쓸때마다 전체조회한 기존 리스트 사이즈+1 -> 댓글번호 증가
 		int num = checkList.size();
 		++num;
 		freeCVO.setFreeCNum(num);
@@ -275,11 +284,13 @@ public class FreeManage {
 	// 댓글수정
 	private void freeCUpdate(int freeNum) {
 		System.out.println("수정할 댓글번호를 입력해주세요");
+		//수정할 댓글번호 입력받음
 		int freeCNum = freeCoInput();
+		//댓글번호와 게시글 번호로 선택한 번호가 존재하는지 체크
 		int checkCNum = commentCheck(freeNum, freeCNum);
 		List<FreeCommentVO> freeCVO = freeCDAO.selectAll(freeNum);
 		for (FreeCommentVO freeCheck : freeCVO) {
-			//댓글번호 유무
+			//입력한 댓글번호를 가진 댓글이 있으면
 			if (checkCNum > 0) {
 				//번호가 입력한 번호와 같으면
 				if (freeCheck.getFreeCNum() == freeCNum) {
@@ -301,11 +312,10 @@ public class FreeManage {
 
 	// 댓글 유무확인
 	private int commentCheck(int freeNum, int freeCNum) {
-		int freeCheckNum = freeCNum;
 		int checkCNum = 0;
 		List<FreeCommentVO> freeCVO = freeCDAO.selectAll(freeNum);
 		for (FreeCommentVO freeCheck : freeCVO) {
-			if (freeCheck.getFreeCNum() == freeCheckNum) {
+			if (freeCheck.getFreeCNum() == freeCNum) {
 				//전체조회해서 입력한 댓글번호값과 같은 댓글번호 누적합
 				checkCNum += freeCheck.getFreeCNum();
 			}
@@ -326,11 +336,15 @@ public class FreeManage {
 	private void freeCDelete(int freeNum) {
 		System.out.println("삭제할 댓글번호를 입력해주세요");
 		int freeCNum = freeCoInput();
+		//선택한 댓글번호가 존재하는지 체크
 		int checkCNum = commentCheck(freeNum, freeCNum);
 		List<FreeCommentVO> freeCVO = freeCDAO.selectAll(freeNum);
 		for (FreeCommentVO freeCheck : freeCVO) {
+			//입력한 댓글번호를 가진 댓글이 있으면
 			if (checkCNum > 0) {
+				//입력한 번호와 같은 댓글의
 				if (freeCheck.getFreeCNum() == freeCNum) {
+					//현재아이디와 비교후 
 					if (freeCheck.getMemId().equals(memId)) {
 						freeCDAO.delete(freeCNum);
 					} else {
@@ -352,6 +366,7 @@ public class FreeManage {
 		List<FreeVO> list = freeDAO.selectAll();
 		String str = "";
 		for (FreeVO freeVO : list) {
+			//입력한 아이디와 일치하면 출력
 			if (freeVO.getMemId().equals(find)) {
 				str += freeVO;
 			}

@@ -2,8 +2,6 @@ package com.yedam.project.board.anon.comment;
 
 import java.util.List;
 
-import com.yedam.project.board.anon.AnonVO;
-
 public interface AnonCommentDAO {
 	
 	//댓글 전체 출력
